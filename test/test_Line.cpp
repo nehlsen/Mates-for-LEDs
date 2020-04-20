@@ -37,6 +37,40 @@ static void printLine(const Line& line)
     }
 }
 
+TEST_CASE("Line: ctor, setter, getter", "[Matrix]")
+{
+    auto line = Line(1, 2, 3, 4);
+    TEST_ASSERT_EQUAL(1, line.getX0());
+    TEST_ASSERT_EQUAL(2, line.getY0());
+    TEST_ASSERT_EQUAL(3, line.getX1());
+    TEST_ASSERT_EQUAL(4, line.getY1());
+
+    line.setStart(7, 8);
+    TEST_ASSERT_EQUAL(7, line.getX0());
+    TEST_ASSERT_EQUAL(8, line.getY0());
+    TEST_ASSERT_EQUAL(3, line.getX1());
+    TEST_ASSERT_EQUAL(4, line.getY1());
+
+    line.setEnd(5, 6);
+    TEST_ASSERT_EQUAL(7, line.getX0());
+    TEST_ASSERT_EQUAL(8, line.getY0());
+    TEST_ASSERT_EQUAL(5, line.getX1());
+    TEST_ASSERT_EQUAL(6, line.getY1());
+
+    auto anotherLine = Line();
+    TEST_ASSERT_EQUAL(0, anotherLine.getX0());
+    TEST_ASSERT_EQUAL(0, anotherLine.getY0());
+    TEST_ASSERT_EQUAL(0, anotherLine.getX1());
+    TEST_ASSERT_EQUAL(0, anotherLine.getY1());
+
+    anotherLine.setStart(2, 3).setEnd(4, 5).setColor(CRGB(10, 20, 30));
+    TEST_ASSERT_EQUAL(2, anotherLine.getX0());
+    TEST_ASSERT_EQUAL(3, anotherLine.getY0());
+    TEST_ASSERT_EQUAL(4, anotherLine.getX1());
+    TEST_ASSERT_EQUAL(5, anotherLine.getY1());
+    TEST_ASSERT_EQUAL(CRGB(10, 20, 30), anotherLine.getColor());
+}
+
 TEST_CASE("Line: straight Lines", "[Matrix]")
 {
     auto lineUp = Line(0, 0, 0, 7);

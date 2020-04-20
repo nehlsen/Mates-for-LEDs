@@ -1,6 +1,12 @@
 #include "Line.h"
 
 // line calc code adapted from AdafruitGfxLib
+// TODO add proper attribution
+
+Line::Line():
+    m_x0(0), m_y0(0), m_x1(0), m_y1(0)
+{
+}
 
 Line::Line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1):
     m_x0(x0), m_y0(y0), m_x1(x1), m_y1(y1)
@@ -24,11 +30,13 @@ uint8_t Line::getY0() const
     return m_y0;
 }
 
-void Line::setStart(uint8_t x, uint8_t y)
+Line& Line::setStart(uint8_t x, uint8_t y)
 {
     m_x0 = x;
     m_y0 = y;
     update();
+
+    return *this;
 }
 
 uint8_t Line::getX1() const
@@ -41,11 +49,13 @@ uint8_t Line::getY1() const
     return m_y1;
 }
 
-void Line::setEnd(uint8_t x, uint8_t y)
+Line& Line::setEnd(uint8_t x, uint8_t y)
 {
     m_x1 = x;
     m_y1 = y;
     update();
+
+    return *this;
 }
 
 const CRGB &Line::getColor() const
@@ -53,10 +63,12 @@ const CRGB &Line::getColor() const
     return m_color;
 }
 
-void Line::setColor(const CRGB &color)
+Line& Line::setColor(const CRGB &color)
 {
     m_color = color;
     update();
+
+    return *this;
 }
 
 void Line::update()
