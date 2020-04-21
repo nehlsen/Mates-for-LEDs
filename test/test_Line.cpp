@@ -43,11 +43,15 @@ TEST_CASE("Line: ctor, setter, getter", "[Matrix]")
     TEST_ASSERT_EQUAL(3, anotherLine.getY0());
     TEST_ASSERT_EQUAL(4, anotherLine.getX1());
     TEST_ASSERT_EQUAL(5, anotherLine.getY1());
-    TEST_ASSERT_EQUAL(CRGB(10, 20, 30), anotherLine.getColor());
+    TEST_ASSERT_COLOR(CRGB(10, 20, 30), anotherLine.getColor());
 }
 
 TEST_CASE("Line: straight Lines", "[Matrix]")
 {
+    auto lineVeryShort = Line(0, 0, 0, 0);
+    TEST_ASSERT_EQUAL(1, lineVeryShort.pixels().size());
+    testLine(1, {{0, 0}}, lineVeryShort);
+
     auto lineUp = Line(0, 0, 0, 7);
     TEST_ASSERT_EQUAL(8, lineUp.pixels().size());
     testLine(8, {{0, 0}, {0, 2}, {0, 5}}, lineUp);

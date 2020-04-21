@@ -9,9 +9,13 @@ public:
     virtual Pixels pixels() const;
 
     // add another primitive to this one, second overwrites first
-    GfxPrimitive& add(const GfxPrimitive& other);
+    GfxPrimitive& merge(const GfxPrimitive& other);
+    // create new primitive from this and other
+    GfxPrimitive merged(const GfxPrimitive& other) const;
     // add another primitive to this one, matching pixels are blended together
     GfxPrimitive& blend(const GfxPrimitive& other);
+    // create new primitive from this and other
+    GfxPrimitive blended(const GfxPrimitive& other) const;
 
 //    void render(Matrix *matrix);
 

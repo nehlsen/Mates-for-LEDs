@@ -4,6 +4,12 @@
 #include <GfxPrimitive.h>
 #include <vector>
 
+#define TEST_ASSERT_COLOR(expected, actual) { \
+TEST_ASSERT_EQUAL(expected.r, actual.r); \
+TEST_ASSERT_EQUAL(expected.g, actual.g); \
+TEST_ASSERT_EQUAL(expected.b, actual.b); \
+}
+
 typedef std::pair<uint8_t, uint8_t> Point_t;
 typedef std::vector<Point_t> PointList_t;
 
