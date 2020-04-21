@@ -17,7 +17,7 @@ public:
     // create new primitive from this and other
     GfxPrimitive blended(const GfxPrimitive& other) const;
 
-//    void render(Matrix *matrix);
+    void render(LedMatrix& matrix) const;
 
 protected:
     Pixels m_pixels;

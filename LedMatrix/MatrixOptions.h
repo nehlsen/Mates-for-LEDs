@@ -10,8 +10,8 @@ enum MatrixOptions {
     MatrixSerpentine       = 0b0000, // rows/cols change direction
     MatrixStraight         = 0b0010, // all rows/cols follow same direction
 
-    MatrixInvertHorizontal = 0b0100, // first pixel is right instead of left
-    MatrixInvertVertical   = 0b1000, // first pixel is on bottom
+    MatrixInvertVertical   = 0b0100, // first pixel is on bottom
+    MatrixInvertHorizontal = 0b1000, // first pixel is right instead of left
 
     MatrixRotate_0         = 0b00000000,
     MatrixRotate_90        = 0b00010000,

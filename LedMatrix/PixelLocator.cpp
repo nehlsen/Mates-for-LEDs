@@ -54,8 +54,6 @@ uint16_t PixelLocator::xyToIndex(uint8_t x, uint8_t y) const
         else          pixelOffset =  major      * majorScale     + minor;
     }
 
-
-
     ESP_LOGD("LedMatrix", "PixelLocator::xyToIndex(%d, %d) -> %d", x, y, pixelOffset);
 
     return pixelOffset;
@@ -63,25 +61,26 @@ uint16_t PixelLocator::xyToIndex(uint8_t x, uint8_t y) const
 
 uint8_t PixelLocator::visualWidth() const
 {
+    if (hasOption(MatrixRotate_90) || hasOption(MatrixRotate_270)) {
+        return m_physicalHeight;
+    }
+
     // rotate 0 or 180
     return m_physicalWidth;
-
-    // rotate 90 or 270
-    return m_physicalHeight;
 }
 
 uint8_t PixelLocator::visualHeight() const
 {
+    if (hasOption(MatrixRotate_90) || hasOption(MatrixRotate_270)) {
+        return m_physicalWidth;
+    }
+
     // rotate 0 or 180
     return m_physicalHeight;
-
-    // rotate 90 or 270
-    return m_physicalWidth;
 }
 
 void PixelLocator::applyRotation(uint8_t *x, uint8_t *y) const
 {
-    //std::swap(a,b);
     uint8_t tmp;
 
     if (hasOption(MatrixRotate_90)) {

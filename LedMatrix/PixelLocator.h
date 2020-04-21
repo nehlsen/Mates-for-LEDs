@@ -19,6 +19,7 @@ protected:
     uint8_t visualWidth() const;
     uint8_t visualHeight() const;
 
+    // applies rotation option from m_options to provided x and y. x and y are both input as well as output
     void applyRotation(uint8_t* x, uint8_t* y) const;
     bool hasOption(MatrixOptions option) const;
 };

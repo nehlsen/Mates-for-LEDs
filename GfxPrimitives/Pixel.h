@@ -1,7 +1,7 @@
 #ifndef MATRIXTEST_PIXEL_H
 #define MATRIXTEST_PIXEL_H
 
-#include <FastLED.h>
+#include "LedMatrix.h"
 
 class Pixel // extend GfxPrimitive ??
 {
@@ -17,7 +17,7 @@ public:
     const CRGB &getColor() const;
     void setColor(const CRGB &color);
 
-//    void render(Matrix *matrix);
+    void render(LedMatrix& matrix) const;
 
 protected:
     uint8_t m_x;
@@ -26,6 +26,7 @@ protected:
 };
 
 #include <vector>
+// a dumb list of pixels. multiple pixels at same coordinates are possible. behaviour undefined
 typedef std::vector<Pixel> Pixels;
 
 #endif //MATRIXTEST_PIXEL_H

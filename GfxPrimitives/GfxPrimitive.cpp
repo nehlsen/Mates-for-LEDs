@@ -43,3 +43,10 @@ GfxPrimitive GfxPrimitive::blended(const GfxPrimitive &other) const
 {
     return GfxPrimitive(*this).blend(other);
 }
+
+void GfxPrimitive::render(LedMatrix &matrix) const
+{
+    for (const auto& pixel : pixels()) {
+        pixel.render(matrix);
+    }
+}
