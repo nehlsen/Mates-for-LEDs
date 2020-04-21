@@ -1,5 +1,5 @@
-#ifndef LEDWALL_LEDMATRIX_H
-#define LEDWALL_LEDMATRIX_H
+#ifndef MATRIX_LEDMATRIX_H
+#define MATRIX_LEDMATRIX_H
 
 #include <FastLED.h>
 #include "PixelLocator.h"
@@ -28,4 +28,4 @@ protected:
     CRGB m_outOfBounds;
 };
 
-#endif //LEDWALL_LEDMATRIX_H
+#endif //MATRIX_LEDMATRIX_H

@@ -1,5 +1,5 @@
-#ifndef MATRIXTEST_TEST_RECT_H
-#define MATRIXTEST_TEST_RECT_H
+#ifndef MATRIX_RECT_H
+#define MATRIX_RECT_H
 
 #include "GfxPrimitive.h"
 
@@ -51,4 +51,4 @@ protected:
     void drawVLine(uint8_t x, uint8_t y, uint8_t height, const CRGB& color);
 };
 
-#endif //MATRIXTEST_TEST_RECT_H
+#endif //MATRIX_RECT_H

@@ -1,5 +1,5 @@
-#ifndef MATRIXTEST_PIXEL_H
-#define MATRIXTEST_PIXEL_H
+#ifndef MATRIX_PIXEL_H
+#define MATRIX_PIXEL_H
 
 #include "LedMatrix.h"
 
@@ -29,4 +29,4 @@ protected:
 // a dumb list of pixels. multiple pixels at same coordinates are possible. behaviour undefined
 typedef std::vector<Pixel> Pixels;
 
-#endif //MATRIXTEST_PIXEL_H
+#endif //MATRIX_PIXEL_H

@@ -1,5 +1,5 @@
-#ifndef MATRIXTEST_MATRIXOPTIONS_H
-#define MATRIXTEST_MATRIXOPTIONS_H
+#ifndef MATRIX_MATRIXOPTIONS_H
+#define MATRIX_MATRIXOPTIONS_H
 
 enum MatrixOptions {
     DefaultOptions         = 0, // horizontal serpentine layout. first pixel is top-left
@@ -19,4 +19,4 @@ enum MatrixOptions {
     MatrixRotate_270       = 0b01000000,
 };
 
-#endif //MATRIXTEST_MATRIXOPTIONS_H
+#endif //MATRIX_MATRIXOPTIONS_H

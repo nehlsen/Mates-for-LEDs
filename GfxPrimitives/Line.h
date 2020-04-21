@@ -1,5 +1,5 @@
-#ifndef MATRIXTEST_TEST_LINE_H
-#define MATRIXTEST_TEST_LINE_H
+#ifndef MATRIX_LINE_H
+#define MATRIX_LINE_H
 
 #include "GfxPrimitive.h"
 
@@ -31,4 +31,4 @@ protected:
     void update();
 };
 
-#endif //MATRIXTEST_TEST_LINE_H
+#endif //MATRIX_LINE_H

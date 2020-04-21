@@ -1,5 +1,5 @@
-#ifndef LEDWALL_GFXPRIMITIVE_H
-#define LEDWALL_GFXPRIMITIVE_H
+#ifndef MATRIX_GFXPRIMITIVE_H
+#define MATRIX_GFXPRIMITIVE_H
 
 #include "Pixel.h"
 
@@ -23,4 +23,4 @@ protected:
     Pixels m_pixels;
 };
 
-#endif //LEDWALL_GFXPRIMITIVE_H
+#endif //MATRIX_GFXPRIMITIVE_H

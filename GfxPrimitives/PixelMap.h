@@ -1,5 +1,5 @@
-#ifndef MATRIXTEST_TEST_PIXELMAP_H
-#define MATRIXTEST_TEST_PIXELMAP_H
+#ifndef MATRIX_PIXELMAP_H
+#define MATRIX_PIXELMAP_H
 
 #include <map>
 #include "Pixel.h"
@@ -30,4 +30,4 @@ protected:
     static Point point(const Pixel& pixel);
 };
 
-#endif //MATRIXTEST_TEST_PIXELMAP_H
+#endif //MATRIX_PIXELMAP_H

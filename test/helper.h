@@ -1,5 +1,5 @@
-#ifndef MATRIXTEST_TEST_HELPER_H
-#define MATRIXTEST_TEST_HELPER_H
+#ifndef MATRIX_TEST_HELPER_H
+#define MATRIX_TEST_HELPER_H
 
 #include <GfxPrimitive.h>
 #include <vector>
@@ -18,4 +18,4 @@ void primitiveHasPixels(int expectedPixelCount, PointList_t expectedPoints, cons
 void primitiveNotHasPixels(PointList_t notExpectedPoints, const GfxPrimitive& primitive);
 void dumpPixels(const GfxPrimitive& primitive);
 
-#endif //MATRIXTEST_TEST_HELPER_H
+#endif //MATRIX_TEST_HELPER_H

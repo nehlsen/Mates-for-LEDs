@@ -1,5 +1,5 @@
-#ifndef MATRIXTEST_PIXELLOCATOR_H
-#define MATRIXTEST_PIXELLOCATOR_H
+#ifndef MATRIX_PIXELLOCATOR_H
+#define MATRIX_PIXELLOCATOR_H
 
 #include <cstdint>
 #include "MatrixOptions.h"
@@ -24,4 +24,4 @@ protected:
     bool hasOption(MatrixOptions option) const;
 };
 
-#endif //MATRIXTEST_PIXELLOCATOR_H
+#endif //MATRIX_PIXELLOCATOR_H
