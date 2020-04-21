@@ -19,8 +19,8 @@ public:
     Pixels toPixels() const;
 
     // add and replace
-    void add(const Pixel& pixel);
-    void add(const Pixels& pixels);
+    PixelMap& add(const Pixel& pixel);
+    PixelMap& add(const Pixels& pixels);
 
     bool has(const Pixel& pixel) const;
 

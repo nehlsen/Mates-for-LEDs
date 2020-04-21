@@ -23,20 +23,24 @@ Pixels PixelMap::toPixels() const
     return pixels;
 }
 
-void PixelMap::add(const Pixel &pixel)
+PixelMap& PixelMap::add(const Pixel &pixel)
 {
     if (has(pixel)) {
         erase(point(pixel));
     }
 
     insert({point(pixel), pixel});
+
+    return *this;
 }
 
-void PixelMap::add(const Pixels &pixels)
+PixelMap& PixelMap::add(const Pixels &pixels)
 {
     for (const auto& pixel : pixels) {
         add(pixel);
     }
+
+    return *this;
 }
 
 bool PixelMap::has(const Pixel &pixel) const
