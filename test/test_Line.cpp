@@ -1,40 +1,15 @@
 #include "unity.h"
 #include <Line.h>
-#include <vector>
-
-typedef std::pair<uint8_t, uint8_t> Point_t;
-typedef std::vector<Point_t> PointList_t;
+#include "helper.h"
 
 static void testLine(int expectedLength, PointList_t expectedPoints, const Line& line)
 {
-    TEST_ASSERT_EQUAL(expectedLength, line.pixels().size());
-
-    auto lineHasPoint = [line](Point_t point) {
-        for (const Pixel& pixel: line.pixels()) {
-            if (pixel.getX() == point.first && pixel.getY() == point.second) {
-                return true;
-            }
-        }
-
-        return false;
-    };
-
-    while (!expectedPoints.empty()) {
-        Point_t point = expectedPoints.back();
-
-        // TODO use sprintf to build a message containing the x/y
-        TEST_ASSERT_MESSAGE(lineHasPoint(point), "Expected point not found on line");
-        expectedPoints.pop_back();
-    }
-
-    TEST_ASSERT_MESSAGE(expectedPoints.empty(), "At least one expected Point not found on line");
+    primitiveHasPixels(expectedLength, expectedPoints, line);
 }
 
 static void printLine(const Line& line)
 {
-    for (const Pixel& pixel: line.pixels()) {
-        ESP_LOGI("TEST", "%d / %d", pixel.getX(), pixel.getY());
-    }
+    dumpPixels(line);
 }
 
 TEST_CASE("Line: ctor, setter, getter", "[Matrix]")
