@@ -1,6 +1,7 @@
 set(Matrix_srcs
         "LedMatrix/LedMatrix.cpp"
         "LedMatrix/PixelLocator.cpp"
+        "LedMatrix/color_utils.cpp"
         )
 set(Matrix_include_dirs
         "LedMatrix/"
