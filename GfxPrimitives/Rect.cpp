@@ -7,14 +7,14 @@ Rect::Rect():
     m_x(0), m_y(0), m_width(0), m_height(0)
 {}
 
-Rect::Rect(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height):
-    m_x(x0), m_y(y0), m_width(width), m_height(height)
+Rect::Rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height):
+        m_x(x), m_y(y), m_width(width), m_height(height)
 {
     update();
 }
 
-Rect::Rect(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height, const CRGB &color):
-    m_x(x0), m_y(y0), m_width(width), m_height(height), m_borderColor(color)
+Rect::Rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, const CRGB &color):
+        m_x(x), m_y(y), m_width(width), m_height(height), m_borderColor(color)
 {
     update();
 }

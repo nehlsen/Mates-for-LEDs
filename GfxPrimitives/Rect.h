@@ -7,8 +7,8 @@ class Rect : public GfxPrimitive
 {
 public:
     Rect();
-    Rect(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height);
-    Rect(uint8_t x0, uint8_t y0, uint8_t width, uint8_t height, const CRGB &color);
+    Rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height);
+    Rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, const CRGB &color);
     
     uint8_t getX0() const;
     uint8_t getY0() const;
