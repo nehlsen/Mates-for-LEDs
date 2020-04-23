@@ -13,9 +13,21 @@ GfxPrimitive& GfxPrimitive::merge(const GfxPrimitive &other)
     return *this;
 }
 
+GfxPrimitive &GfxPrimitive::merge(const Pixel &pixel)
+{
+    m_pixels = PixelMap::fromPixels(pixels()).add(pixel).toPixels();
+
+    return *this;
+}
+
 GfxPrimitive GfxPrimitive::merged(const GfxPrimitive &other) const
 {
     return GfxPrimitive(*this).merge(other);
+}
+
+GfxPrimitive GfxPrimitive::merged(const Pixel &pixel) const
+{
+    return GfxPrimitive(*this).merge(pixel);
 }
 
 GfxPrimitive& GfxPrimitive::blend(const GfxPrimitive &other)
