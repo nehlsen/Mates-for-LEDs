@@ -11,6 +11,8 @@ set(GfxPrimitives_srcs
         "GfxPrimitives/GfxPrimitive.cpp"
         "GfxPrimitives/Pixel.cpp"
         "GfxPrimitives/PixelMap.cpp"
+        "GfxPrimitives/Point.cpp"
+        "GfxPrimitives/Size.cpp"
         "GfxPrimitives/Line.cpp"
         "GfxPrimitives/Rect.cpp"
         "GfxPrimitives/Circle.cpp"

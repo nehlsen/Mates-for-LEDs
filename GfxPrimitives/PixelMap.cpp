@@ -1,10 +1,5 @@
 #include "PixelMap.h"
 
-bool Point::operator<(const Point &other) const
-{
-    return x == other.x ? y < other.y : x < other.x;
-}
-
 PixelMap PixelMap::fromPixels(const Pixels &pixels)
 {
     auto pm = PixelMap();

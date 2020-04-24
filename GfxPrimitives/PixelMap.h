@@ -3,13 +3,7 @@
 
 #include <map>
 #include "Pixel.h"
-
-struct Point {
-    uint8_t x;
-    uint8_t y;
-
-    bool operator<(const Point& other) const;
-};
+#include "Point.h"
 
 // indexed list of pixels. each coordinate can hold exactly one pixel
 class PixelMap : public std::map<Point, const Pixel>
