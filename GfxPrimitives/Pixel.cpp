@@ -24,6 +24,21 @@ void Pixel::setY(uint8_t y)
     m_y = y;
 }
 
+void Pixel::transform(int8_t x, int8_t y)
+{
+    if (x < 0 && abs(x) > m_x) {
+        // FIXME
+        x = -1 * m_x;
+    }
+    if (y < 0 && abs(y) > m_y) {
+        // FIXME
+        y = -1 * m_y;
+    }
+
+    m_x += x;
+    m_y += y;
+}
+
 const CRGB &Pixel::getColor() const
 {
     return m_color;

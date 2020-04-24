@@ -56,6 +56,20 @@ GfxPrimitive GfxPrimitive::blended(const GfxPrimitive &other) const
     return GfxPrimitive(*this).blend(other);
 }
 
+GfxPrimitive &GfxPrimitive::transform(int8_t x, int8_t y)
+{
+    for (auto& pixel : m_pixels) {
+        pixel.transform(x, y);
+    }
+
+    return *this;
+}
+
+GfxPrimitive GfxPrimitive::transformed(int8_t x, int8_t y) const
+{
+    return GfxPrimitive(*this).transform(x, y);
+}
+
 void GfxPrimitive::render(LedMatrix &matrix) const
 {
     for (const auto& pixel : pixels()) {

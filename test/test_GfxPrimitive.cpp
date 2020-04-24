@@ -32,3 +32,9 @@ TEST_CASE("GfxPrimitive: blend", "[Matrix]")
     TEST_ASSERT_EQUAL(1, greenLine.pixels().size());
     TEST_ASSERT_COLOR(CRGB(128, 127, 0), greenLine.pixels()[0].getColor());
 }
+
+TEST_CASE("GfxPrimitive: transform", "[Matrix]")
+{
+    // TODO test transform
+    TEST_IGNORE_MESSAGE("TODO");
+}

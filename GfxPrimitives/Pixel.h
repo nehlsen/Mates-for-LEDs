@@ -14,6 +14,9 @@ public:
     uint8_t getY() const;
     void setY(uint8_t y);
 
+    // FIXME for this to work properly we need to be able to have negative m_x/m_y
+    void transform(int8_t x, int8_t y);
+
     const CRGB &getColor() const;
     void setColor(const CRGB &color);
 

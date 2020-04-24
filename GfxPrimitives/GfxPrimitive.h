@@ -22,6 +22,10 @@ public:
     // create new primitive from this and other
     GfxPrimitive blended(const GfxPrimitive& other) const;
 
+    // change all pixels of primitve to be moved in x/y direction
+    GfxPrimitive& transform(int8_t x, int8_t y);
+    GfxPrimitive transformed(int8_t x, int8_t y) const;
+
     void render(LedMatrix& matrix) const;
 
 protected:
