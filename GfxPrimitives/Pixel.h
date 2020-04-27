@@ -2,20 +2,25 @@
 #define MATRIX_PIXEL_H
 
 #include "LedMatrix.h"
+#include "Point.h"
 
 class Pixel // extend GfxPrimitive ??
 {
 public:
-    Pixel(uint8_t x, uint8_t y, const CRGB& color);
+    Pixel(int16_t x, int16_t y, const CRGB& color);
+    Pixel(const Point &location, const CRGB& color);
 
-    uint8_t getX() const;
-    void setX(uint8_t x);
+    int16_t getX() const;
+    Pixel& setX(int16_t x);
 
-    uint8_t getY() const;
-    void setY(uint8_t y);
+    int16_t getY() const;
+    Pixel& setY(int16_t y);
+
+    const Point &getLocation() const;
+    Pixel& setLocation(const Point &location);
 
     // FIXME for this to work properly we need to be able to have negative m_x/m_y
-    void transform(int8_t x, int8_t y);
+    void transform(int16_t x, int16_t y);
 
     const CRGB &getColor() const;
     void setColor(const CRGB &color);
@@ -23,8 +28,8 @@ public:
     void render(LedMatrix& matrix) const;
 
 protected:
-    uint8_t m_x;
-    uint8_t m_y;
+    int16_t m_x;
+    int16_t m_y;
     CRGB m_color;
 };
 

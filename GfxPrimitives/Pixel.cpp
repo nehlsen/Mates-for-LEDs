@@ -1,40 +1,47 @@
 #include "Pixel.h"
 
-Pixel::Pixel(uint8_t x, uint8_t y, const CRGB &color):
+Pixel::Pixel(int16_t x, int16_t y, const CRGB &color):
     m_x(x), m_y(y), m_color(color)
 {}
 
-uint8_t Pixel::getX() const
+Pixel::Pixel(const Point &location, const CRGB &color):
+    Pixel(location.x, location.y, color)
+{}
+
+int16_t Pixel::getX() const
 {
     return m_x;
 }
 
-void Pixel::setX(uint8_t x)
+Pixel& Pixel::setX(int16_t x)
 {
     m_x = x;
+    return *this;
 }
 
-uint8_t Pixel::getY() const
+int16_t Pixel::getY() const
 {
     return m_y;
 }
 
-void Pixel::setY(uint8_t y)
+Pixel& Pixel::setY(int16_t y)
 {
     m_y = y;
+    return *this;
 }
 
-void Pixel::transform(int8_t x, int8_t y)
+const Point &Pixel::getLocation() const
 {
-    if (x < 0 && abs(x) > m_x) {
-        // FIXME
-        x = -1 * m_x;
-    }
-    if (y < 0 && abs(y) > m_y) {
-        // FIXME
-        y = -1 * m_y;
-    }
+    return Point({getX(), getY()});
+}
 
+Pixel& Pixel::setLocation(const Point &location)
+{
+    return setX(location.x).setY(location.y);
+}
+
+void Pixel::transform(int16_t x, int16_t y)
+{
     m_x += x;
     m_y += y;
 }
