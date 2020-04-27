@@ -1,6 +1,7 @@
 #ifndef MATRIX_GFXPRIMITIVE_H
 #define MATRIX_GFXPRIMITIVE_H
 
+#include "LedMatrix.h"
 #include "Pixel.h"
 
 class GfxPrimitive

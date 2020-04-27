@@ -73,6 +73,6 @@ GfxPrimitive GfxPrimitive::transformed(int8_t x, int8_t y) const
 void GfxPrimitive::render(LedMatrix &matrix) const
 {
     for (const auto& pixel : pixels()) {
-        pixel.render(matrix);
+        matrix.pixel(pixel.getX(), pixel.getY()) = pixel.getColor();
     }
 }

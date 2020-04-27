@@ -55,8 +55,3 @@ void Pixel::setColor(const CRGB &color)
 {
     m_color = color;
 }
-
-void Pixel::render(LedMatrix &matrix) const
-{
-    matrix.pixel(getX(), getY()) = getColor();
-}
