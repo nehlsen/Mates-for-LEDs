@@ -16,6 +16,7 @@ set(GfxPrimitives_srcs
         "GfxPrimitives/Line.cpp"
         "GfxPrimitives/Rect.cpp"
         "GfxPrimitives/Circle.cpp"
+        "GfxPrimitives/Text.cpp"
         )
 set(GfxPrimitives_include_dirs
         "GfxPrimitives/"

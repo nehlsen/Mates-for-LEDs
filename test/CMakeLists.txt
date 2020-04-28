@@ -7,6 +7,7 @@ set(TEST_SRCS
         test_PixelMap.cpp
         test_GfxPrimitive.cpp
         test_Circle.cpp
+        test_Text.cpp
         test_color_utils.cpp
         )
 

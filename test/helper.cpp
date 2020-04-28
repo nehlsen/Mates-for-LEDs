@@ -16,11 +16,19 @@ void primitiveHasPixels(int expectedPixelCount, PointList_t expectedPoints, cons
 {
     char assertMessage[52];
     sprintf(assertMessage, "Expected gfx-primitive to have %d Points got %d", expectedPixelCount, primitive.pixels().size());
+    if (expectedPixelCount != primitive.pixels().size()) {
+        ESP_LOGE("TEST", "expectedPixelCount %d != actual %d", expectedPixelCount, primitive.pixels().size());
+        dumpPixels(primitive);
+    }
     TEST_ASSERT_EQUAL_MESSAGE(expectedPixelCount, primitive.pixels().size(), assertMessage);
 
     while (!expectedPoints.empty()) {
         Point_t point = expectedPoints.back();
 
+        if (!primitiveHasPoint(point, primitive)) {
+            ESP_LOGE("TEST", "Expected Point (%d,%d) not found on gfx-primitive", point.first, point.second);
+            dumpPixels(primitive);
+        }
         sprintf(assertMessage, "Expected Point (%d,%d) not found on gfx-primitive", point.first, point.second);
         TEST_ASSERT_MESSAGE(primitiveHasPoint(point, primitive), assertMessage);
         expectedPoints.pop_back();
