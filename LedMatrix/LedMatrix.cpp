@@ -31,6 +31,13 @@ void LedMatrix::drawPixel(uint8_t x, uint8_t y, const CRGB &color)
     pixel(x, y) = color;
 }
 
+void LedMatrix::fade(uint8_t scaledown)
+{
+    for (int i = 0; i < FastLED.size(); i++) {
+        FastLED.leds()[i].nscale8(scaledown);
+    }
+}
+
 void LedMatrix::show()
 {
     FastLED.show();

@@ -17,6 +17,8 @@ public:
 
     void drawPixel(uint8_t x, uint8_t y, const CRGB& color);
 
+    static void fade(uint8_t scaledown);
+
     static void show();
 
 protected:
