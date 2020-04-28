@@ -10,9 +10,10 @@ TEST_ASSERT_EQUAL(expected.g, actual.g); \
 TEST_ASSERT_EQUAL(expected.b, actual.b); \
 }
 
-typedef std::pair<uint8_t, uint8_t> Point_t;
+typedef std::pair<int16_t, int16_t> Point_t;
 typedef std::vector<Point_t> PointList_t;
 
+bool pointInListOfPixels(const Point_t& expectedPoint, const Pixels& listOfPixels);
 bool primitiveHasPoint(Point_t point, const GfxPrimitive& primitive);
 void primitiveHasPixels(int expectedPixelCount, PointList_t expectedPoints, const GfxPrimitive& primitive);
 void primitiveNotHasPixels(PointList_t notExpectedPoints, const GfxPrimitive& primitive);

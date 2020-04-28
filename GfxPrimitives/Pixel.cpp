@@ -30,7 +30,7 @@ Pixel& Pixel::setY(int16_t y)
     return *this;
 }
 
-const Point &Pixel::getLocation() const
+const Point Pixel::getLocation() const
 {
     return Point({getX(), getY()});
 }
@@ -40,10 +40,17 @@ Pixel& Pixel::setLocation(const Point &location)
     return setX(location.x).setY(location.y);
 }
 
-void Pixel::transform(int16_t x, int16_t y)
+Pixel& Pixel::transform(int16_t x, int16_t y)
 {
     m_x += x;
     m_y += y;
+
+    return *this;
+}
+
+Pixel Pixel::transformed(int16_t x, int16_t y) const
+{
+    return Pixel(*this).transform(x, y);
 }
 
 const CRGB &Pixel::getColor() const

@@ -70,9 +70,118 @@ GfxPrimitive GfxPrimitive::transformed(int8_t x, int8_t y) const
     return GfxPrimitive(*this).transform(x, y);
 }
 
+GfxPrimitive &GfxPrimitive::setCanvas(int16_t x, int16_t y)
+{
+    return setCanvas(x, y, 0, 0, CanvasClipping);
+}
+
+GfxPrimitive& GfxPrimitive::setCanvas(int16_t x, int16_t y, int16_t width, int16_t height, GfxPrimitive::CanvasOptions options)
+{
+    return setCanvas({x, y, width, height, options});
+}
+
+GfxPrimitive &GfxPrimitive::setCanvas(GfxPrimitive::Canvas canvas)
+{
+    m_canvas = canvas;
+    return *this;
+}
+
+GfxPrimitive::Canvas GfxPrimitive::getCanvas() const
+{
+    return m_canvas;
+}
+
+Pixels GfxPrimitive::mappedPixels() const
+{
+    // if canvas has no x AND no y -> no transform
+    // if canvas has no w AND no h -> no clipping/wrapping
+    if (!m_canvas.transforms() && !m_canvas.clipsOrWraps()) {
+        return pixels();
+    }
+
+    Pixels pixels_mapped = pixels();
+    canvasTransformPixels(pixels_mapped);
+    canvasClipPixels(pixels_mapped);
+    canvasWrapPixels(pixels_mapped);
+
+    return pixels_mapped;
+}
+
 void GfxPrimitive::render(LedMatrix &matrix) const
 {
-    for (const auto& pixel : pixels()) {
+    for (const auto& pixel : mappedPixels()) {
         matrix.pixel(pixel.getX(), pixel.getY()) = pixel.getColor();
     }
 }
+
+void GfxPrimitive::canvasTransformPixels(Pixels& pixels) const
+{
+    if (!m_canvas.transforms()) {
+        return;
+    }
+
+    for (auto& pixel : pixels) {
+        pixel.transform(m_canvas.x, m_canvas.y);
+    }
+}
+
+void GfxPrimitive::canvasClipPixels(Pixels &pixels) const
+{
+    if (!m_canvas.clipsOrWraps() || m_canvas.options != CanvasClipping) {
+        return;
+    }
+
+    auto isOnCanvas = [this](Pixel &pixel) {
+        if (pixel.getX() < 0 || pixel.getX() - m_canvas.x >= m_canvas.width) {
+            return false;
+        }
+        if (pixel.getY() < 0 || pixel.getY() - m_canvas.y >= m_canvas.height) {
+            return false;
+        }
+
+        return true;
+    };
+
+    for (auto it = pixels.begin(); it != pixels.end(); ) {
+        if (!isOnCanvas(*it)) {
+            it = pixels.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void GfxPrimitive::canvasWrapPixels(Pixels &pixels) const
+{
+    if (!m_canvas.clipsOrWraps() || m_canvas.options != CanvasWrapAround) {
+        return;
+    }
+
+    auto wrapPixel = [this](Pixel &pixel) {
+        bool transformed;
+        do {
+            transformed = false;
+            if (pixel.getX() < 0) {
+                pixel.transform(m_canvas.width, 0);
+                transformed = true;
+            }
+            if (pixel.getY() < 0) {
+                pixel.transform(0, m_canvas.height);
+                transformed = true;
+            }
+            if (pixel.getX() >= m_canvas.width) {
+                pixel.transform(-m_canvas.width, 0);
+                transformed = true;
+            }
+            if (pixel.getY() >= m_canvas.height) {
+                pixel.transform(0, -m_canvas.height);
+                transformed = true;
+            }
+        } while (transformed);
+    };
+
+    for (auto it = pixels.begin(); it != pixels.end(); ++it) {
+        wrapPixel(*it);
+    }
+}
+

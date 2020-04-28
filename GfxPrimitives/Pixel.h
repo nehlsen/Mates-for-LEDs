@@ -1,7 +1,7 @@
 #ifndef MATRIX_PIXEL_H
 #define MATRIX_PIXEL_H
 
-#include "pixeltypes.h"
+#include <FastLED.h>
 #include "Point.h"
 
 class Pixel // extend GfxPrimitive ??
@@ -16,10 +16,11 @@ public:
     int16_t getY() const;
     Pixel& setY(int16_t y);
 
-    const Point &getLocation() const;
+    const Point getLocation() const;
     Pixel& setLocation(const Point &location);
 
-    void transform(int16_t x, int16_t y);
+    Pixel& transform(int16_t x, int16_t y);
+    Pixel transformed(int16_t x, int16_t y) const;
 
     const CRGB &getColor() const;
     void setColor(const CRGB &color);

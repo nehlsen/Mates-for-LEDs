@@ -1,10 +1,10 @@
 #include "helper.h"
 #include "unity.h"
 
-bool primitiveHasPoint(Point_t point, const GfxPrimitive& primitive)
+bool pointInListOfPixels(const Point_t& expectedPoint, const Pixels& listOfPixels)
 {
-    for (const Pixel& pixel: primitive.pixels()) {
-        if (pixel.getX() == point.first && pixel.getY() == point.second) {
+    for (const Pixel& pixel: listOfPixels) {
+        if (pixel.getX() == expectedPoint.first && pixel.getY() == expectedPoint.second) {
             return true;
         }
     }
@@ -12,9 +12,14 @@ bool primitiveHasPoint(Point_t point, const GfxPrimitive& primitive)
     return false;
 }
 
+bool primitiveHasPoint(Point_t point, const GfxPrimitive& primitive)
+{
+    return pointInListOfPixels(point, primitive.pixels());
+}
+
 void primitiveHasPixels(int expectedPixelCount, PointList_t expectedPoints, const GfxPrimitive& primitive)
 {
-    char assertMessage[52];
+    char assertMessage[58];
     sprintf(assertMessage, "Expected gfx-primitive to have %d Points got %d", expectedPixelCount, primitive.pixels().size());
     if (expectedPixelCount != primitive.pixels().size()) {
         ESP_LOGE("TEST", "expectedPixelCount %d != actual %d", expectedPixelCount, primitive.pixels().size());
@@ -37,7 +42,7 @@ void primitiveHasPixels(int expectedPixelCount, PointList_t expectedPoints, cons
 
 void primitiveNotHasPixels(PointList_t notExpectedPoints, const GfxPrimitive& primitive)
 {
-    char assertMessage[52];
+    char assertMessage[58];
 
     while (!notExpectedPoints.empty()) {
         Point_t point = notExpectedPoints.back();

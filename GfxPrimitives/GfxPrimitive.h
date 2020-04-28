@@ -4,7 +4,7 @@
 #include "LedMatrix.h"
 #include "Pixel.h"
 
-class GfxPrimitive
+class GfxPrimitive// rename to canvas?
 {
 public:
     virtual Pixels pixels() const;
@@ -23,14 +23,52 @@ public:
     // create new primitive from this and other
     GfxPrimitive blended(const GfxPrimitive& other) const;
 
-    // change all pixels of primitve to be moved in x/y direction
+    // change all pixels of primitive to be moved in x/y direction
     GfxPrimitive& transform(int8_t x, int8_t y);
     GfxPrimitive transformed(int8_t x, int8_t y) const;
 
-    void render(LedMatrix& matrix) const;
+    // set canvas size AND position ON MATRIX
+    //    0, 0 == canvas and matrix are same
+    //   10,10 == canvas 0,0 -> matrix 10,10
+    //   -5,-5 == canvas 0,0 -> matrix -5,-5 = OutOfBounds/Offscreen
+    //            canvas 5,5 -> matrix  0, 0
+    // set options ?
+    //    wrap around OR clip ?
+    //     moving to the side, out of the "canvas" wraps around OR drops pixels ?
+
+    enum CanvasOptions {
+        CanvasClipping,
+        CanvasWrapAround,
+    };
+    struct Canvas {
+        int16_t x;
+        int16_t y;
+        int16_t width;
+        int16_t height;
+        CanvasOptions options;
+
+        bool transforms() const { return x != 0 || y != 0; }
+        bool clipsOrWraps() const { return width != 0 || height != 0; }
+    };
+    // this will not change any pixels! options are applied in GfxPrimitive::render()
+    // if width AND height are 0: width, height and options have no effect and will be ignored
+    GfxPrimitive& setCanvas(int16_t x, int16_t y);
+    GfxPrimitive& setCanvas(int16_t x, int16_t y, int16_t width, int16_t height, CanvasOptions options);
+    GfxPrimitive& setCanvas(Canvas canvas);
+    Canvas getCanvas() const;
+    // get a list of pixels with canvas options applied
+    Pixels mappedPixels() const;
+
+    virtual void render(LedMatrix& matrix) const;
 
 protected:
     Pixels m_pixels;
+
+    Canvas m_canvas = {0, 0, 0, 0, CanvasClipping};
+    void canvasTransformPixels(Pixels& pixels) const;
+    // only checks for width and height, canvas x/y transformation has to be already applied
+    void canvasClipPixels(Pixels& pixels) const;
+    void canvasWrapPixels(Pixels& pixels) const;
 };
 
 #endif //MATRIX_GFXPRIMITIVE_H
