@@ -7,7 +7,7 @@
 class Pixel // extend GfxPrimitive ??
 {
 public:
-    Pixel(int16_t x, int16_t y, const CRGB& color);
+    Pixel(int16_t x, int16_t y, const CRGB& color = CRGB(0, 0, 0));
     Pixel(const Point &location, const CRGB& color);
 
     int16_t getX() const;

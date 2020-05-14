@@ -76,3 +76,30 @@ TEST_CASE("PixelMap: factory, toPixels", "[Matrix]")
     TEST_ASSERT_EQUAL(6, pixels2[1].getY());
     TEST_ASSERT_EQUAL(111, pixels2[1].getColor().r);
 }
+
+TEST_CASE("PixelMap: visualSize", "[Matrix]")
+{
+    auto pm = PixelMap();
+    auto pixel1 = Pixel(1, 2, CRGB(11, 22, 33));
+    auto pixel1b = Pixel(1, 2, CRGB(99, 99, 99));
+    auto pixel2 = Pixel(5, 6, CRGB(111, 122, 133));
+
+    TEST_ASSERT_EQUAL(0, pm.visualSize().width);
+    TEST_ASSERT_EQUAL(0, pm.visualSize().height);
+
+    pm.add(pixel1);
+    TEST_ASSERT_EQUAL(2, pm.visualSize().width);
+    TEST_ASSERT_EQUAL(3, pm.visualSize().height);
+
+    pm.add(pixel1b);
+    TEST_ASSERT_EQUAL(2, pm.visualSize().width);
+    TEST_ASSERT_EQUAL(3, pm.visualSize().height);
+
+    pm.add(pixel2);
+    TEST_ASSERT_EQUAL(6, pm.visualSize().width);
+    TEST_ASSERT_EQUAL(7, pm.visualSize().height);
+
+    pm.clear();
+    TEST_ASSERT_EQUAL(0, pm.visualSize().width);
+    TEST_ASSERT_EQUAL(0, pm.visualSize().height);
+}

@@ -26,6 +26,8 @@ PixelMap& PixelMap::add(const Pixel &pixel)
 
     insert({point(pixel), pixel});
 
+    // FIXME erase BLACK Pixels
+
     return *this;
 }
 
@@ -46,6 +48,21 @@ bool PixelMap::has(const Pixel &pixel) const
 const Pixel &PixelMap::at(const Pixel &pixel) const
 {
     return map::at(point(pixel));
+}
+
+Size PixelMap::visualSize() const
+{
+    Size size = {0, 0};
+    for (auto it = begin(); it != end(); ++it) {
+        if (it->first.x+1 > size.width) {
+            size.width = it->first.x+1;
+        }
+        if (it->first.y+1 > size.height) {
+            size.height = it->first.y+1;
+        }
+    }
+
+    return size;
 }
 
 Point PixelMap::point(const Pixel& pixel)
