@@ -1,12 +1,20 @@
-# Matrix IDF Component
+# Mates for LEDs
 
-_Overengineered Matrix library for ESP32 IDF using FastLed_
+_Mates for LEDs_ - **Ma**trix **Te**xt and **S**hapes for LEDs
+
+_Overengineered Matrix and graphics primitive library for ESP32 IDF using FastLed_
 
 ## Credit
 Parts copied from or at least inspired by Marcmerlin FastLed NeoMatrix and Adafruit GFX Library.  
 Credit goes to
 - https://github.com/marcmerlin/FastLED_NeoMatrix.git
 - https://github.com/adafruit/Adafruit-GFX-Library
+
+## Dependencies
+- https://github.com/nehlsen/FastLedIdf \
+  In theory it should work with the original FastLED or other forks
+- ESP IDF >= 4 \
+  Tested on v4.1-dev-1086-g93a8603c5
 
 ## What's inside:
 * `LedMatrix` and `GfxPrimitives` compose the IDF Component
