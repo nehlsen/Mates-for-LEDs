@@ -8,14 +8,19 @@ Pixels GfxPrimitive::pixels() const
 
 GfxPrimitive& GfxPrimitive::merge(const GfxPrimitive &other)
 {
-    m_pixels = PixelMap::fromPixels(pixels()).add(other.pixels()).toPixels();
-
-    return *this;
+    return merge(other.pixels());
 }
 
 GfxPrimitive &GfxPrimitive::merge(const Pixel &pixel)
 {
     m_pixels = PixelMap::fromPixels(pixels()).add(pixel).toPixels();
+
+    return *this;
+}
+
+GfxPrimitive& GfxPrimitive::merge(const Pixels &pixelsToAdd)
+{
+    m_pixels = PixelMap::fromPixels(pixels()).add(pixelsToAdd).toPixels();
 
     return *this;
 }

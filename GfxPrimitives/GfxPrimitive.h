@@ -12,6 +12,7 @@ public:
     // add another primitive to this one, second overwrites first
     GfxPrimitive& merge(const GfxPrimitive& other);
     GfxPrimitive& merge(const Pixel& pixel);
+    GfxPrimitive& merge(const Pixels &pixels);
 
     // create new primitive from this and other
     GfxPrimitive merged(const GfxPrimitive& other) const;

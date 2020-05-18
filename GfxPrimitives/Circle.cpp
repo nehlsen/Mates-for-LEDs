@@ -11,7 +11,7 @@ Circle::Circle(uint8_t x, uint8_t y, uint8_t radius):
 }
 
 Circle::Circle(uint8_t x, uint8_t y, uint8_t radius, const CRGB &color):
-        m_x(x), m_y(y), m_radius(radius), m_quarters(QuartersAll), m_borderColor(color)
+    m_x(x), m_y(y), m_radius(radius), m_quarters(QuartersAll), m_borderColor(color)
 {
     update();
 }
