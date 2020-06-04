@@ -8,7 +8,7 @@
 class LedMatrix
 {
 public:
-    LedMatrix(CLEDController& fastLedController, uint8_t width, uint8_t height, uint8_t options= MatrixOptions::DefaultOptions);
+    LedMatrix(CFastLED &fastLed, uint8_t width, uint8_t height, uint8_t options= MatrixOptions::DefaultOptions);
 
     uint8_t getWidth() const;
     uint8_t getHeight() const;
@@ -17,12 +17,14 @@ public:
 
     void drawPixel(uint8_t x, uint8_t y, const CRGB& color);
 
-    static void fade(uint8_t scaledown);
+    void fade(uint8_t scaledown);
 
-    static void show();
+    void show();
+
+    void clear(bool forceWrite = true);
 
 protected:
-    CLEDController &m_fastLedController;
+    CFastLED &m_fastLed;
     const PixelLocator m_pixelLocator;
     const uint8_t m_width;
     const uint8_t m_height;
