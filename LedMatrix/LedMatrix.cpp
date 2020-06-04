@@ -31,6 +31,16 @@ void LedMatrix::drawPixel(uint8_t x, uint8_t y, const CRGB &color)
     pixel(x, y) = color;
 }
 
+void LedMatrix::setBrightness(uint8_t scale)
+{
+    m_fastLed.setBrightness(scale);
+}
+
+uint8_t LedMatrix::getBrightness()
+{
+    return m_fastLed.getBrightness();
+}
+
 void LedMatrix::fade(uint8_t scaledown)
 {
     for (int i = 0; i < m_fastLed.size(); i++) {

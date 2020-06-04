@@ -14,13 +14,13 @@ public:
     uint8_t getHeight() const;
 
     CRGB& pixel(uint8_t x, uint8_t y);
-
     void drawPixel(uint8_t x, uint8_t y, const CRGB& color);
 
+    void setBrightness(uint8_t scale);
+    uint8_t getBrightness();
+
     void fade(uint8_t scaledown);
-
     void show();
-
     void clear(bool forceWrite = true);
 
 protected:
