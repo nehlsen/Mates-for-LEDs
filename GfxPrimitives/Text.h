@@ -56,7 +56,6 @@ protected:
 
     CRGB m_color;
     CRGB m_backgroundColor;
-    bool drawBackground() const;
 
     void update();
     void drawChar(uint8_t x, uint8_t y, unsigned char c); // using 'the classic font'

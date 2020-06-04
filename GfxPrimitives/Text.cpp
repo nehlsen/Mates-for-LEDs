@@ -138,11 +138,6 @@ void Text::updateSize()
     m_size.height *= lineCount;
 }
 
-bool Text::drawBackground() const
-{
-    return m_backgroundColor.r != 0 && m_backgroundColor.g != 0 && m_backgroundColor.b != 0;
-}
-
 void Text::update()
 {
     m_pixels.clear();
@@ -175,7 +170,7 @@ void Text::drawChar(uint8_t x, uint8_t y, unsigned char c)
         for (int8_t j = 6; j >= 0; j--, line >>= 1) { // 7 rows
             if (line & 1) {
                 addNewPixel(x + i, y + j, m_color);
-            } else if (drawBackground()) {
+            } else {
                 addNewPixel(x + i, y + j, m_backgroundColor);
             }
         }

@@ -25,8 +25,8 @@ public:
     GfxPrimitive blended(const GfxPrimitive& other) const;
 
     // change all pixels of primitive to be moved in x/y direction
-    GfxPrimitive& transform(int8_t x, int8_t y);
-    GfxPrimitive transformed(int8_t x, int8_t y) const;
+    GfxPrimitive& transform(int16_t x, int16_t y);
+    GfxPrimitive transformed(int16_t x, int16_t y) const;
 
     // set canvas size AND position ON MATRIX
     //    0, 0 == canvas and matrix are same

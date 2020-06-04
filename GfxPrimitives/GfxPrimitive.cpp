@@ -61,7 +61,7 @@ GfxPrimitive GfxPrimitive::blended(const GfxPrimitive &other) const
     return GfxPrimitive(*this).blend(other);
 }
 
-GfxPrimitive &GfxPrimitive::transform(int8_t x, int8_t y)
+GfxPrimitive &GfxPrimitive::transform(int16_t x, int16_t y)
 {
     for (auto& pixel : m_pixels) {
         pixel.transform(x, y);
@@ -70,7 +70,7 @@ GfxPrimitive &GfxPrimitive::transform(int8_t x, int8_t y)
     return *this;
 }
 
-GfxPrimitive GfxPrimitive::transformed(int8_t x, int8_t y) const
+GfxPrimitive GfxPrimitive::transformed(int16_t x, int16_t y) const
 {
     return GfxPrimitive(*this).transform(x, y);
 }
@@ -171,7 +171,7 @@ void GfxPrimitive::canvasWrapPixels(Pixels &pixels) const
                 transformed = true;
             }
             if (pixel.getY() < 0) {
-                pixel.transform(0, m_canvas.height);
+                pixel.transform(0, m_canvas.height); // FIXME endless loop for height == 0
                 transformed = true;
             }
             if (pixel.getX() >= m_canvas.width) {
