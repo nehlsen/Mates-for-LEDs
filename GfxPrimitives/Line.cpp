@@ -20,6 +20,12 @@ Line::Line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, const CRGB &color):
     update();
 }
 
+Line::Line(Point p0, Point p1):
+    m_x0(p0.x), m_y0(p0.y), m_x1(p1.x), m_y1(p1.y)
+{
+    update();
+}
+
 uint8_t Line::getX0() const
 {
     return m_x0;

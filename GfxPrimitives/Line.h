@@ -9,6 +9,7 @@ public:
     Line();
     Line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1);
     Line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, const CRGB &color);
+    Line(Point p0, Point p1);
 
     uint8_t getX0() const;
     uint8_t getY0() const;
