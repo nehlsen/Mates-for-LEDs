@@ -114,8 +114,24 @@ Pixels GfxPrimitive::mappedPixels() const
 
 void GfxPrimitive::render(LedMatrix &matrix) const
 {
+    render(matrix, RenderModeOverwrite);
+}
+
+void GfxPrimitive::render(LedMatrix &matrix, RenderMode renderMode) const
+{
     for (const auto& pixel : mappedPixels()) {
-        matrix.pixel(pixel.getX(), pixel.getY()) = pixel.getColor();
+        switch (renderMode) {
+            default:
+            case RenderModeOverwrite:
+                matrix.pixel(pixel.getX(), pixel.getY()) = pixel.getColor();
+                break;
+            case RenderModeAdd:
+                matrix.pixel(pixel.getX(), pixel.getY()) += pixel.getColor();
+                break;
+            case RenderModeAverage:
+                matrix.pixel(pixel.getX(), pixel.getY()) = matrix.pixel(pixel.getX(), pixel.getY()).lerp8(pixel.getColor(), 128);
+                break;
+        }
     }
 }
 

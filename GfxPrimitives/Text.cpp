@@ -6,6 +6,11 @@ Text::Text():
     m_x(0), m_y(0), m_size({0, 0}), m_color(0, 0, 0), m_backgroundColor(0, 0, 0)
 {}
 
+Text::Text(const std::string &text, const CRGB &color):
+    Text(0, 0, text, color)
+{
+}
+
 Text::Text(uint8_t x, uint8_t y, const std::string &text, const CRGB &color):
     m_x(x), m_y(y), m_size({0, 0}), m_color(color), m_backgroundColor(0, 0, 0)
 {

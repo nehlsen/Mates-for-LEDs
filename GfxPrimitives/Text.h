@@ -10,7 +10,8 @@ class Text : public GfxPrimitive
 {
 public:
     Text();
-    Text(uint8_t x, uint8_t y, const std::string& text, const CRGB &color);
+    explicit Text(const std::string& text, const CRGB &color = CRGB::Black);
+    Text(uint8_t x, uint8_t y, const std::string& text, const CRGB &color = CRGB::Black);
 
     // x and y are bottom left
     uint8_t getX() const;

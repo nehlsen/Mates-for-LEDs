@@ -60,7 +60,13 @@ public:
     // get a list of pixels with canvas options applied
     Pixels mappedPixels() const;
 
+    enum RenderMode {
+        RenderModeOverwrite, // overwrite pixels on matrix
+        RenderModeAdd,       // blend pixels with pixels on matrix (using ADD)
+        RenderModeAverage,   // blend pixels with pixels on matrix (using average)
+    };
     virtual void render(LedMatrix& matrix) const;
+    virtual void render(LedMatrix& matrix, RenderMode renderMode) const;
 
 protected:
     Pixels m_pixels;
