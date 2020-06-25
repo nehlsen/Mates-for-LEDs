@@ -100,7 +100,7 @@ Pixels GfxPrimitive::mappedPixels() const
 {
     // if canvas has no x AND no y -> no transform
     // if canvas has no w AND no h -> no clipping/wrapping
-    if (!m_canvas.transforms() && !m_canvas.clipsOrWraps()) {
+    if (!m_canvas.transforms() && !m_canvas.clipsOrWraps() && !m_canvas.matrixTransform.does()) {
         return pixels();
     }
 
@@ -109,7 +109,29 @@ Pixels GfxPrimitive::mappedPixels() const
     canvasClipPixels(pixels_mapped);
     canvasWrapPixels(pixels_mapped);
 
+    applyMatrixTransformation(pixels_mapped);
+
     return pixels_mapped;
+}
+
+GfxPrimitive & GfxPrimitive::setRotation(int16_t degrees)
+{
+    return setMatrixTransform(
+            std::cos(degrees),
+            -std::sin(degrees),
+            std::sin(degrees),
+            std::cos(degrees)
+            );
+}
+
+GfxPrimitive & GfxPrimitive::setMatrixTransform(int16_t a, int16_t b, int16_t c, int16_t d)
+{
+    m_canvas.matrixTransform.a = a;
+    m_canvas.matrixTransform.b = b;
+    m_canvas.matrixTransform.c = c;
+    m_canvas.matrixTransform.d = d;
+
+    return *this;
 }
 
 void GfxPrimitive::render(LedMatrix &matrix) const
@@ -152,7 +174,7 @@ void GfxPrimitive::canvasClipPixels(Pixels &pixels) const
         return;
     }
 
-    auto isOnCanvas = [this](Pixel &pixel) {
+    auto isOnCanvas = [this](const Pixel &pixel) {
         if (pixel.getX() < 0 || pixel.getX() - m_canvas.x >= m_canvas.width) {
             return false;
         }
@@ -201,8 +223,21 @@ void GfxPrimitive::canvasWrapPixels(Pixels &pixels) const
         } while (transformed);
     };
 
-    for (auto it = pixels.begin(); it != pixels.end(); ++it) {
-        wrapPixel(*it);
+    for (auto & pixel : pixels) {
+        wrapPixel(pixel);
     }
 }
 
+void GfxPrimitive::applyMatrixTransformation(Pixels &pixels) const
+{
+    auto applyTransformation = [this](Pixel &pixel) {
+        const int16_t x = m_canvas.matrixTransform.a * pixel.getX() + m_canvas.matrixTransform.b * pixel.getY();
+        const int16_t y = m_canvas.matrixTransform.c * pixel.getX() + m_canvas.matrixTransform.d * pixel.getY();
+        pixel.setX(x);
+        pixel.setY(y);
+    };
+
+    for (auto & pixel : pixels) {
+        applyTransformation(pixel);
+    }
+}

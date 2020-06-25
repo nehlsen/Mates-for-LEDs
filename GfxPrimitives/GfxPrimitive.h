@@ -50,6 +50,16 @@ public:
 
         bool transforms() const { return x != 0 || y != 0; }
         bool clipsOrWraps() const { return width != 0 || height != 0; }
+
+        struct {
+            int16_t a = 1;
+            int16_t b = 0;
+            int16_t c = 0;
+            int16_t d = 1;
+
+            bool isIdentityMatrix() const { return a == 1 && b == 0 && c == 0 && d == 1; }
+            bool does() const { return !isIdentityMatrix(); }
+        } matrixTransform;
     };
     // this will not change any pixels! options are applied in GfxPrimitive::render()
     // if width AND height are 0: width, height and options have no effect and will be ignored
@@ -59,6 +69,9 @@ public:
     Canvas getCanvas() const;
     // get a list of pixels with canvas options applied
     Pixels mappedPixels() const;
+
+    GfxPrimitive& setRotation(int16_t degrees);
+    GfxPrimitive& setMatrixTransform(int16_t a, int16_t b, int16_t c, int16_t d);
 
     enum RenderMode {
         RenderModeOverwrite, // overwrite pixels on matrix
@@ -76,6 +89,8 @@ protected:
     // only checks for width and height, canvas x/y transformation has to be already applied
     void canvasClipPixels(Pixels& pixels) const;
     void canvasWrapPixels(Pixels& pixels) const;
+
+    void applyMatrixTransformation(Pixels& pixels) const;
 };
 
 #endif //MATRIX_GFXPRIMITIVE_H
