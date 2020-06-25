@@ -32,14 +32,17 @@ public:
     const std::string &getText() const;
     Text& setText(const std::string &text);
 
+    const CRGB &getBackgroundColor() const;
+    Text& setBackgroundColor(const CRGB &color);
+
     // TODO color per char and even rainbow over all chars -> each char has multiple colors
     //      rainbow should work in hor&vert direction
     //      flame animation would be nice too :)
     const CRGB &getColor() const;
     Text& setColor(const CRGB &color);
 
-    const CRGB &getBackgroundColor() const;
-    Text& setBackgroundColor(const CRGB &color);
+    const CRGBPalette16 &getGradient() const;
+    Text& setGradient(const CRGBPalette16 &gradient);
 
     // TODO setFont
 
@@ -55,12 +58,17 @@ protected:
     Size m_size;
     void updateSize();
 
-    CRGB m_color;
     CRGB m_backgroundColor;
+    CRGB m_color;
+    CRGBPalette16 m_gradient;
+    enum {
+        GradientModePerLetter,
+        GradientModeOverlay, // over matrix (Text has no access to matrix) / over canvas (canvas might not be set?)
+    } m_gradientMode;
 
     void update();
-    void drawChar(uint8_t x, uint8_t y, unsigned char c); // using 'the classic font'
-    void addNewPixel(int16_t x, int16_t y, const CRGB& color); // FIXME copy from circle
+    void drawChar(uint8_t x, uint8_t y, int charIndex, unsigned char c); // using 'the classic font'
+    void addNewPixel(int16_t x, int16_t y, const CRGB& color);
 };
 
 #endif //MATRIX_TEXT_H

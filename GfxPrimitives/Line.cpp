@@ -1,4 +1,5 @@
 #include "Line.h"
+#include <LedMode/utilities.h>
 
 // line calc code adapted from AdafruitGfxLib
 // TODO add proper attribution
@@ -72,9 +73,30 @@ const CRGB &Line::getColor() const
 Line& Line::setColor(const CRGB &color)
 {
     m_color = color;
+    if (hasGradient()) {
+        m_gradient = CRGBPalette16();
+    }
     update();
 
     return *this;
+}
+
+const CRGBPalette16 & Line::getGradient() const
+{
+    return m_gradient;
+}
+
+Line & Line::setGradient(const CRGBPalette16 &gradient)
+{
+    m_gradient = gradient;
+    update();
+
+    return *this;
+}
+
+bool Line::hasGradient()// FIXME is always true
+{
+    return m_gradient != CRGBPalette16();
 }
 
 void Line::update()
@@ -108,12 +130,20 @@ void Line::update()
         ystep = -1;
     }
 
+    auto colorAtX = [this, x0, x1](uint8_t x) {
+        if (!hasGradient()) {
+            return m_color;
+        }
+
+        return ColorFromPalette(m_gradient, map(x, x0, x1, 0, 255));
+    };
+
     Pixels newPixels;
     for (; x0 <= x1; x0++) {
         if (steep) {
-            newPixels.push_back(Pixel(y0, x0, m_color));
+            newPixels.push_back(Pixel(y0, x0, colorAtX(x0)));
         } else {
-            newPixels.push_back(Pixel(x0, y0, m_color));
+            newPixels.push_back(Pixel(x0, y0, colorAtX(x0)));
         }
         err -= dy;
         if (err < 0) {

@@ -1,5 +1,5 @@
+#include <LedMode/utilities.h>
 #include "Text.h"
-
 #include "fonts/font5x7.h"
 
 Text::Text():
@@ -81,6 +81,19 @@ Text& Text::setText(const std::string &text)
     return *this;
 }
 
+const CRGB &Text::getBackgroundColor() const
+{
+    return m_backgroundColor;
+}
+
+Text& Text::setBackgroundColor(const CRGB &color)
+{
+    m_backgroundColor = color;
+    update();
+
+    return *this;
+}
+
 const CRGB &Text::getColor() const
 {
     return m_color;
@@ -94,14 +107,14 @@ Text& Text::setColor(const CRGB &color)
     return *this;
 }
 
-const CRGB &Text::getBackgroundColor() const
+const CRGBPalette16 & Text::getGradient() const
 {
-    return m_backgroundColor;
+    return m_gradient;
 }
 
-Text& Text::setBackgroundColor(const CRGB &color)
+Text & Text::setGradient(const CRGBPalette16 &gradient)
 {
-    m_backgroundColor = color;
+    m_gradient = gradient;
     update();
 
     return *this;
@@ -149,32 +162,54 @@ void Text::update()
 
     uint8_t cursor_x = m_x;
 
-    for (auto it = m_text.cbegin(); it != m_text.cend(); ++it) {
-        if (*it == '\r') {
+    for (int charIndex = 0; charIndex < m_text.size(); ++charIndex) {
+        auto charAtIndex = m_text.at(charIndex);
+
+        if (charAtIndex == '\r') {
             continue;
         }
 
         // FIXME auto Line Feed - we do not know the display width ...
-        if (*it == '\n') {
+        if (charAtIndex == '\n') {
             cursor_x = m_x;
             transform(0, fontSize().height); // "scroll" canvas to next line
             continue;
         }
-        drawChar(cursor_x, m_y, *it);
+        drawChar(cursor_x, m_y, charIndex, charAtIndex);
         cursor_x += fontSize().width;
+        // TODO letter spacing
     }
 }
 
-void Text::drawChar(uint8_t x, uint8_t y, unsigned char c)
+void Text::drawChar(uint8_t x, uint8_t y, int charIndex, unsigned char c)
 {
-    if (c >= 176) // FIXME no idea what this is for...
+    if (c >= 176) { // FIXME no idea what this is for...
         c++; // Handle 'classic' charset behavior
+    }
+    
+    const bool hasGradient = m_gradient != CRGBPalette16();
+    auto colorAtX = [this, hasGradient, charIndex](uint8_t x) {
+//        if (!hasGradient) { // FIXME is always true
+            return m_color;
+//        }
 
+        switch (m_gradientMode) {
+            default:
+            case GradientModePerLetter:
+                return ColorFromPalette(m_gradient, map(charIndex, 0, m_text.size(), 0, 255));
+                break;
+
+//            case GradientModeOverlay:
+//                return ColorFromPalette(m_gradient, map(x, 0, matrixWidth, 0, 255));
+//                break;
+        }
+    };
+        
     for (int8_t i = 0; i < 5; i++) { // 5 columns
         uint8_t line = font[c * 5 + i];
         for (int8_t j = 6; j >= 0; j--, line >>= 1) { // 7 rows
             if (line & 1) {
-                addNewPixel(x + i, y + j, m_color);
+                addNewPixel(x + i, y + j, colorAtX(x+i));
             } else {
                 addNewPixel(x + i, y + j, m_backgroundColor);
             }

@@ -22,12 +22,18 @@ public:
     const CRGB &getColor() const;
     Line& setColor(const CRGB &color);
 
+    const CRGBPalette16 &getGradient() const;
+    Line& setGradient(const CRGBPalette16 &gradient);
+
 protected:
     uint8_t m_x0;
     uint8_t m_y0;
     uint8_t m_x1;
     uint8_t m_y1;
+
     CRGB m_color;
+    bool hasGradient();
+    CRGBPalette16 m_gradient;
 
     void update();
 };
