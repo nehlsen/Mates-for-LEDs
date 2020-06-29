@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 struct Point {
-    const int16_t x;
-    const int16_t y;
+    int16_t x;
+    int16_t y;
 
     bool operator<(const Point& other) const;
 };

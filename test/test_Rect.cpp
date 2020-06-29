@@ -4,7 +4,7 @@
 
 TEST_CASE("Rect: ctor, setter, getter", "[Matrix]")
 {
-    auto rect = Rect(1, 2, 3, 3);
+    auto rect = Rect(1, 2, 3, 3, CRGB::Red);
     TEST_ASSERT_EQUAL(1, rect.getX0());
     TEST_ASSERT_EQUAL(2, rect.getY0());
     TEST_ASSERT_EQUAL(3, rect.getWidth());
@@ -88,76 +88,107 @@ TEST_CASE("Rect: ctor, setter, getter", "[Matrix]")
 
 TEST_CASE("Rect: paint, zero", "[Matrix]")
 {
-    auto rect = Rect().setStart(0, 0).setSize(0, 0);
-    primitiveHasPixels(0, {}, rect);
+    auto rect = Rect().setBorderColor(CRGB::Red).setStart(0, 0).setSize(0, 0);
+    primitiveHasPixels(0, {}, rect, false);
 
     rect.setStart(5, 1);
-    primitiveHasPixels(0, {}, rect);
+    primitiveHasPixels(0, {}, rect, false);
 }
 
 TEST_CASE("Rect: paint, 1px", "[Matrix]")
 {
-    auto rect = Rect().setStart(0, 0).setSize(1, 1);
-    primitiveHasPixels(1, {{0, 0}}, rect);
+    auto rect = Rect().setBorderColor(CRGB::Red).setStart(0, 0).setSize(1, 1);
+    primitiveHasPixels(1, {{0, 0}}, rect, false);
 
     rect.setStart(0, 0).setEnd(0, 0);
-    primitiveHasPixels(1, {{0, 0}}, rect);
+    primitiveHasPixels(1, {{0, 0}}, rect, false);
 
     rect.setStart(5, 1).setSize(1, 1);
-    primitiveHasPixels(1, {{5, 1}}, rect);
+    primitiveHasPixels(1, {{5, 1}}, rect, false);
 
     rect.setStart(5, 1).setEnd(5, 1);
-    primitiveHasPixels(1, {{5, 1}}, rect);
+    primitiveHasPixels(1, {{5, 1}}, rect, false);
 }
 
 TEST_CASE("Rect: paint, cube", "[Matrix]")
 {
-    auto rect = Rect().setStart(0, 0).setSize(2, 2);
-    primitiveHasPixels(4, {{0, 0}, {0, 1}, {1, 0}, {1, 1}}, rect);
+    auto rect = Rect().setBorderColor(CRGB::Red).setStart(0, 0).setSize(2, 2);
+    primitiveHasPixels(4, {{0, 0},
+                           {0, 1},
+                           {1, 0},
+                           {1, 1}}, rect, false);
 
     rect.setStart(0, 0).setEnd(1, 1);
-    primitiveHasPixels(4, {{0, 0}, {0, 1}, {1, 0}, {1, 1}}, rect);
+    primitiveHasPixels(4, {{0, 0},
+                           {0, 1},
+                           {1, 0},
+                           {1, 1}}, rect, false);
 
     rect.setStart(4, 5).setSize(2, 2);
-    primitiveHasPixels(4, {{4, 5}, {5, 5}, {4, 6}, {5, 6}}, rect);
+    primitiveHasPixels(4, {{4, 5},
+                           {5, 5},
+                           {4, 6},
+                           {5, 6}}, rect, false);
 
     rect.setStart(7, 3).setEnd(8, 4);
-    primitiveHasPixels(4, {{7, 3}, {7, 4}, {8, 3}, {8, 4}}, rect);
+    primitiveHasPixels(4, {{7, 3},
+                           {7, 4},
+                           {8, 3},
+                           {8, 4}}, rect, false);
 
     rect.setStart(7, 3).setEnd(6, 2);
-    primitiveHasPixels(4, {{6, 2}, {7, 2}, {6, 3}, {7, 3}}, rect);
+    primitiveHasPixels(4, {{6, 2},
+                           {7, 2},
+                           {6, 3},
+                           {7, 3}}, rect, false);
 }
 
 TEST_CASE("Rect: paint, horizontal line", "[Matrix]")
 {
-    auto rect = Rect().setStart(0, 0).setSize(3, 0);
-    primitiveHasPixels(3, {{0, 0}, {1, 0}, {2, 0}}, rect);
+    auto rect = Rect().setBorderColor(CRGB::Red).setStart(0, 0).setSize(3, 0);
+    primitiveHasPixels(3, {{0, 0},
+                           {1, 0},
+                           {2, 0}}, rect, false);
     primitiveNotHasPixels({{3, 0}}, rect);
 }
 
 TEST_CASE("Rect: paint, vertical line", "[Matrix]")
 {
-    auto rect = Rect().setStart(0, 0).setSize(0, 3);
-    primitiveHasPixels(3, {{0, 0}, {0, 1}, {0, 2}}, rect);
+    auto rect = Rect().setBorderColor(CRGB::Red).setStart(0, 0).setSize(0, 3);
+    primitiveHasPixels(3, {{0, 0},
+                           {0, 1},
+                           {0, 2}}, rect, false);
     primitiveNotHasPixels({{0, 3}}, rect);
 }
 
 TEST_CASE("Rect: paint, empty rect", "[Matrix]")
 {
-    auto rect = Rect().setStart(0, 0).setSize(3, 3);
-    primitiveHasPixels(12, {{0, 0}, {0, 2}, {2, 0}, {2, 2}}, rect);
+    auto rect = Rect().setBorderColor(CRGB::Red).setStart(0, 0).setSize(3, 3);
+    primitiveHasPixels(12, {{0, 0},
+                            {0, 2},
+                            {2, 0},
+                            {2, 2}}, rect, false);
     primitiveNotHasPixels({{1, 1}}, rect);
 
     rect.setSize(4, 4);
-    primitiveHasPixels(16, {{0, 0}, {0, 3}, {3, 0}, {3, 3}}, rect);
+    primitiveHasPixels(16, {{0, 0},
+                            {0, 3},
+                            {3, 0},
+                            {3, 3}}, rect, false);
     primitiveNotHasPixels({{1, 1}, {1, 2}, {2, 1}, {2, 2}}, rect);
 }
 
 TEST_CASE("Rect: paint, filled rect", "[Matrix]")
 {
     auto rect = Rect(0, 0, 3, 3, CRGB(255, 0, 0)).setFillColor(CRGB(0, 255, 0));
-    primitiveHasPixels(13, {{0, 0}, {0, 2}, {2, 0}, {2, 2}}, rect);
+    primitiveHasPixels(13, {{0, 0},
+                            {0, 2},
+                            {2, 0},
+                            {2, 2}}, rect, false);
 
     rect.setSize(4, 4);
-    primitiveHasPixels(20, {{0, 0}, {0, 3}, {3, 0}, {3, 3}}, rect);
+    primitiveHasPixels(20, {{0, 0},
+                            {0, 3},
+                            {3, 0},
+                            {3, 3}}, rect, false);
 }

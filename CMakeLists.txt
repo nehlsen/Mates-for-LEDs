@@ -9,6 +9,9 @@ set(Matrix_include_dirs
 
 set(GfxPrimitives_srcs
         "GfxPrimitives/GfxPrimitive.cpp"
+        "GfxPrimitives/GfxCanvas.cpp"
+        "GfxPrimitives/Canvas.cpp"
+        "GfxPrimitives/Renderable.cpp"
         "GfxPrimitives/Pixel.cpp"
         "GfxPrimitives/PixelMap.cpp"
         "GfxPrimitives/Point.cpp"

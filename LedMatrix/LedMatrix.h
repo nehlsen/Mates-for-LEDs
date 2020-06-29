@@ -16,6 +16,10 @@ public:
     CRGB& pixel(uint8_t x, uint8_t y);
     void drawPixel(uint8_t x, uint8_t y, const CRGB& color);
 
+//    operator=(Pixels) render mode: overwrite
+//    operator+=(Pixels) render mode: add
+//    operator/=(Pixels) render mode: average
+
     void setBrightness(uint8_t scale);
     uint8_t getBrightness();
 

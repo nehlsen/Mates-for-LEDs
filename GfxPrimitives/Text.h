@@ -1,12 +1,12 @@
 #ifndef MATRIX_TEXT_H
 #define MATRIX_TEXT_H
 
-#include "GfxPrimitive.h"
+#include "GfxCanvas.h"
 #include "Point.h"
 #include "Size.h"
 #include <string>
 
-class Text : public GfxPrimitive
+class Text : public GfxCanvas
 {
 public:
     Text();

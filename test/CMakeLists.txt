@@ -6,6 +6,8 @@ set(TEST_SRCS
         test_Rect.cpp
         test_PixelMap.cpp
         test_GfxPrimitive.cpp
+        test_GfxCanvas.cpp
+        test_Canvas.cpp
         test_Circle.cpp
         test_Text.cpp
         test_color_utils.cpp
@@ -14,5 +16,5 @@ set(TEST_SRCS
 idf_component_register(
         SRCS ${TEST_SRCS}
         INCLUDE_DIRS "."
-        REQUIRES unity Matrix
+        REQUIRES unity Mates-for-LEDs
 )

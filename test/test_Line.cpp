@@ -4,7 +4,7 @@
 
 static void testLine(int expectedLength, PointList_t expectedPoints, const Line& line)
 {
-    primitiveHasPixels(expectedLength, expectedPoints, line);
+    primitiveHasPixels(expectedLength, expectedPoints, line, false);
 }
 
 static void printLine(const Line& line)
@@ -48,42 +48,34 @@ TEST_CASE("Line: ctor, setter, getter", "[Matrix]")
 
 TEST_CASE("Line: straight Lines", "[Matrix]")
 {
-    auto lineVeryShort = Line(0, 0, 0, 0);
-    TEST_ASSERT_EQUAL(1, lineVeryShort.pixels().size());
+    auto lineVeryShort = Line(0, 0, 0, 0, CRGB::Red);
     testLine(1, {{0, 0}}, lineVeryShort);
 
-    auto lineUp = Line(0, 0, 0, 7);
-    TEST_ASSERT_EQUAL(8, lineUp.pixels().size());
+    auto lineUp = Line(0, 0, 0, 7, CRGB::Red);
     testLine(8, {{0, 0}, {0, 2}, {0, 5}}, lineUp);
     
-    auto lineDown = Line(5, 7, 5, 0);
-    TEST_ASSERT_EQUAL(8, lineDown.pixels().size());
+    auto lineDown = Line(5, 7, 5, 0, CRGB::Red);
     testLine(8, {{5, 7}, {5, 2}, {5, 0}}, lineDown);
 
-    auto lineRight = Line(5, 5, 9, 5);
-    TEST_ASSERT_EQUAL(5, lineRight.pixels().size());
+    auto lineRight = Line(5, 5, 9, 5, CRGB::Red);
     testLine(5, {{5, 5,}, {7, 5}, {9, 5}}, lineRight);
 
-    auto lineLeft = Line(5, 7, 1, 7);
-    TEST_ASSERT_EQUAL(5, lineLeft.pixels().size());
+    auto lineLeft = Line(5, 7, 1, 7, CRGB::Red);
     testLine(5, {{5, 7}, {3, 7}, {1, 7}}, lineLeft);
 }
 
 TEST_CASE("Line: 45 degree Lines", "[Matrix]")
 {
-    auto line45right = Line(3, 3, 6, 6);
-    TEST_ASSERT_EQUAL(4, line45right.pixels().size());
+    auto line45right = Line(3, 3, 6, 6, CRGB::Red);
     testLine(4, {{3, 3}, {4, 4}, {5, 5}, {6, 6}}, line45right);
 
-    auto line45left = Line(7, 7, 3, 3);
-    TEST_ASSERT_EQUAL(5, line45left.pixels().size());
+    auto line45left = Line(7, 7, 3, 3, CRGB::Red);
     testLine(5, {{3, 3}, {4, 4}, {7, 7}}, line45left);
 }
 
 TEST_CASE("Line: steep Lines", "[Matrix]")
 {
-    auto lineSteepRight = Line(2, 2, 4, 9);
-    TEST_ASSERT_EQUAL(8, lineSteepRight.pixels().size());
+    auto lineSteepRight = Line(2, 2, 4, 9, CRGB::Red);
     PointList_t lineSteepRightPoints = {
             {2, 2},
             {2, 3},
@@ -96,8 +88,7 @@ TEST_CASE("Line: steep Lines", "[Matrix]")
     };
     testLine(8, lineSteepRightPoints, lineSteepRight);
 
-    auto lineSteepLeft = Line(9, 2, 5, 9);
-    TEST_ASSERT_EQUAL(8, lineSteepLeft.pixels().size());
+    auto lineSteepLeft = Line(9, 2, 5, 9, CRGB::Red);
     PointList_t lineSteepLeftPoints = {
             {9, 2},
             {8, 3},
@@ -113,8 +104,7 @@ TEST_CASE("Line: steep Lines", "[Matrix]")
 
 TEST_CASE("Line: shallow Lines", "[Matrix]")
 {
-    auto lineShallowRight = Line(4, 7, 7, 5);
-    TEST_ASSERT_EQUAL(4, lineShallowRight.pixels().size());
+    auto lineShallowRight = Line(4, 7, 7, 5, CRGB::Red);
     PointList_t lineShallowRightPoints = {
             {4, 7},
             {5, 6},
@@ -123,8 +113,7 @@ TEST_CASE("Line: shallow Lines", "[Matrix]")
     };
     testLine(4, lineShallowRightPoints, lineShallowRight);
 
-    auto lineShallowLeft = Line(9, 2, 5, 4);
-    TEST_ASSERT_EQUAL(5, lineShallowLeft.pixels().size());
+    auto lineShallowLeft = Line(9, 2, 5, 4, CRGB::Red);
     PointList_t lineShallowLeftPoints = {
             {5, 4},
             {6, 4},

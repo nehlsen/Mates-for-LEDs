@@ -5,7 +5,7 @@
 #include <Rect.h>
 #include <Circle.h>
 #include <Text.h>
-#include "../Shark/Shark.h"
+//#include "../Shark/Shark.h"
 
 #define PIN 12
 #define MATRIX_WIDTH 25
@@ -114,27 +114,27 @@ void smiley(LedMatrix& matrix)
     matrix.show();
 }
 
-void shark(LedMatrix& matrix, uint16_t delay = 100)
-{
-    Shark shark;
-
-    int frame = 0;
-    while (true) {
-//        for (int i = 0; i < FastLED.size(); i++) {
-//            FastLED.leds()[i].nscale8(120);
+//void shark(LedMatrix& matrix, uint16_t delay = 100)
+//{
+//    Shark shark;
+//
+//    int frame = 0;
+//    while (true) {
+////        for (int i = 0; i < FastLED.size(); i++) {
+////            FastLED.leds()[i].nscale8(120);
+////        }
+//        FastLED.clear();
+//
+//        shark.setFrame(frame).render(matrix);
+//        matrix.show();
+//        FastLED.delay(delay);
+//
+//        frame++;
+//        if (frame >= shark.getFrameCount()) {
+//            frame = 0;
 //        }
-        FastLED.clear();
-
-        shark.setFrame(frame).render(matrix);
-        matrix.show();
-        FastLED.delay(delay);
-
-        frame++;
-        if (frame >= shark.getFrameCount()) {
-            frame = 0;
-        }
-    }
-}
+//    }
+//}
 
 void demo_lines(LedMatrix& matrix, uint16_t delay)
 {
