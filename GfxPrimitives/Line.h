@@ -32,7 +32,8 @@ protected:
     uint8_t m_y1;
 
     CRGB m_color;
-    bool hasGradient();
+
+    bool m_useGradient = false;
     CRGBPalette16 m_gradient;
 
     void update();

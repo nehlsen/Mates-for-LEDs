@@ -29,3 +29,8 @@ uint16_t color24to16(uint8_t r, uint8_t g, uint8_t b)
            ((uint16_t)(g & 0xFC) << 3) |
                       (b         >> 3);
 }
+
+uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}

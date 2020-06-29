@@ -1,31 +1,26 @@
 #include "Line.h"
-#include <LedMode/utilities.h>
+#include "../LedMatrix/color_utils.h"
 
 // line calc code adapted from AdafruitGfxLib
 // TODO add proper attribution
 
 Line::Line():
-    m_x0(0), m_y0(0), m_x1(0), m_y1(0)
-{
-}
+    Line(0, 0, 0, 0, CRGB(0, 0, 0))
+{}
 
 Line::Line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1):
-    m_x0(x0), m_y0(y0), m_x1(x1), m_y1(y1)
-{
-    update();
-}
+    Line(x0, y0, x1, y1, CRGB(0, 0, 0))
+{}
 
 Line::Line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, const CRGB &color):
-    m_x0(x0), m_y0(y0), m_x1(x1), m_y1(y1), m_color(color)
+    m_x0(x0), m_y0(y0), m_x1(x1), m_y1(y1), m_color(color), m_gradient(CRGB(0, 0, 0))
 {
     update();
 }
 
 Line::Line(Point p0, Point p1):
-    m_x0(p0.x), m_y0(p0.y), m_x1(p1.x), m_y1(p1.y)
-{
-    update();
-}
+    Line(p0.x, p0.y, p1.x, p1.y, CRGB(0, 0, 0))
+{}
 
 uint8_t Line::getX0() const
 {
@@ -73,9 +68,7 @@ const CRGB &Line::getColor() const
 Line& Line::setColor(const CRGB &color)
 {
     m_color = color;
-    if (hasGradient()) {
-        m_gradient = CRGBPalette16();
-    }
+    m_useGradient = false;
     update();
 
     return *this;
@@ -89,14 +82,10 @@ const CRGBPalette16 & Line::getGradient() const
 Line & Line::setGradient(const CRGBPalette16 &gradient)
 {
     m_gradient = gradient;
+    m_useGradient = true;
     update();
 
     return *this;
-}
-
-bool Line::hasGradient()// FIXME is always true
-{
-    return m_gradient != CRGBPalette16();
 }
 
 void Line::update()
@@ -131,7 +120,7 @@ void Line::update()
     }
 
     auto colorAtX = [this, x0, x1](uint8_t x) {
-        if (!hasGradient()) {
+        if (!m_useGradient) {
             return m_color;
         }
 

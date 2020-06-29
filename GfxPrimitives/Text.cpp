@@ -1,9 +1,9 @@
-#include <LedMode/utilities.h>
 #include "Text.h"
 #include "fonts/font5x7.h"
+#include "../LedMatrix/color_utils.h"
 
 Text::Text():
-    m_x(0), m_y(0), m_size({0, 0}), m_color(0, 0, 0), m_backgroundColor(0, 0, 0)
+    m_x(0), m_y(0), m_size({0, 0}), m_backgroundColor(0, 0, 0), m_color(0, 0, 0)
 {}
 
 Text::Text(const std::string &text, const CRGB &color):
@@ -12,7 +12,7 @@ Text::Text(const std::string &text, const CRGB &color):
 }
 
 Text::Text(uint8_t x, uint8_t y, const std::string &text, const CRGB &color):
-    m_x(x), m_y(y), m_size({0, 0}), m_color(color), m_backgroundColor(0, 0, 0)
+    m_x(x), m_y(y), m_size({0, 0}), m_backgroundColor(0, 0, 0), m_color(color)
 {
     setText(text);
 }
