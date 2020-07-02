@@ -3,7 +3,7 @@
 #include "../LedMatrix/color_utils.h"
 
 Text::Text():
-    m_x(0), m_y(0), m_size({0, 0}), m_backgroundColor(0, 0, 0), m_color(0, 0, 0)
+    Text(0, 0, "", CRGB::Black)
 {}
 
 Text::Text(const std::string &text, const CRGB &color):
@@ -12,7 +12,7 @@ Text::Text(const std::string &text, const CRGB &color):
 }
 
 Text::Text(uint8_t x, uint8_t y, const std::string &text, const CRGB &color):
-    m_x(x), m_y(y), m_size({0, 0}), m_backgroundColor(0, 0, 0), m_color(color)
+    m_x(x), m_y(y), m_size({0, 0}), m_backgroundColor(CRGB::Black), m_color(color)
 {
     setText(text);
 }
@@ -102,6 +102,7 @@ const CRGB &Text::getColor() const
 Text& Text::setColor(const CRGB &color)
 {
     m_color = color;
+    m_useGradient = false;
     update();
 
     return *this;
@@ -112,10 +113,24 @@ const CRGBPalette16 & Text::getGradient() const
     return m_gradient;
 }
 
-Text & Text::setGradient(const CRGBPalette16 &gradient)
+Text & Text::setGradient(const CRGBPalette16 &gradient, GradientMode gradientMode)
 {
     m_gradient = gradient;
+    m_useGradient = true;
+    setGradientMode(gradientMode);
     update();
+
+    return *this;
+}
+
+Text::GradientMode Text::getGradientMode() const
+{
+    return m_gradientMode;
+}
+
+Text& Text::setGradientMode(Text::GradientMode gradientMode)
+{
+    m_gradientMode = gradientMode;
 
     return *this;
 }
@@ -186,22 +201,19 @@ void Text::drawChar(uint8_t x, uint8_t y, int charIndex, unsigned char c)
     if (c >= 176) { // FIXME no idea what this is for...
         c++; // Handle 'classic' charset behavior
     }
-    
-    const bool hasGradient = m_gradient != CRGBPalette16();
-    auto colorAtX = [this, hasGradient, charIndex](uint8_t x) {
-//        if (!hasGradient) { // FIXME is always true
+
+    auto colorAtX = [this, charIndex](uint8_t x) {
+        if (!m_useGradient) {
             return m_color;
-//        }
+        }
 
         switch (m_gradientMode) {
             default:
             case GradientModePerLetter:
                 return ColorFromPalette(m_gradient, map(charIndex, 0, m_text.size(), 0, 255));
-                break;
 
-//            case GradientModeOverlay:
-//                return ColorFromPalette(m_gradient, map(x, 0, matrixWidth, 0, 255));
-//                break;
+            case GradientModeOverlay:
+                return ColorFromPalette(m_gradient, map(x, 0, m_size.width, 0, 255));
         }
     };
         

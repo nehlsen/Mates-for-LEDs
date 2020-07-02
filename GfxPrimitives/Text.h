@@ -41,8 +41,16 @@ public:
     const CRGB &getColor() const;
     Text& setColor(const CRGB &color);
 
+    enum GradientMode {
+        GradientModePerLetter,
+        GradientModeOverlay, // over matrix (Text has no access to matrix) / over canvas (canvas might not be set?)
+    };
+
     const CRGBPalette16 &getGradient() const;
-    Text& setGradient(const CRGBPalette16 &gradient);
+    Text& setGradient(const CRGBPalette16 &gradient, GradientMode gradientMode = GradientModePerLetter);
+
+    GradientMode getGradientMode() const;
+    Text& setGradientMode(GradientMode gradientMode);
 
     // TODO setFont
 
@@ -60,11 +68,10 @@ protected:
 
     CRGB m_backgroundColor;
     CRGB m_color;
+    bool m_useGradient = false;
     CRGBPalette16 m_gradient;
-    enum {
-        GradientModePerLetter,
-        GradientModeOverlay, // over matrix (Text has no access to matrix) / over canvas (canvas might not be set?)
-    } m_gradientMode;
+
+    GradientMode m_gradientMode;
 
     void update();
     void drawChar(uint8_t x, uint8_t y, int charIndex, unsigned char c); // using 'the classic font'
