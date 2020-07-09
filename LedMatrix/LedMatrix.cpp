@@ -1,4 +1,5 @@
 #include "LedMatrix.h"
+#include <controller.h>
 
 LedMatrix::LedMatrix(CFastLED &fastLed, uint8_t width, uint8_t height, uint8_t options) :
     m_fastLed(fastLed), m_pixelLocator(width, height, options),
@@ -19,11 +20,21 @@ uint8_t LedMatrix::getHeight() const
 CRGB& LedMatrix::pixel(uint8_t x, uint8_t y)
 {
     uint16_t index = m_pixelLocator.xyToIndex(x, y);
-    if (index >= m_fastLed.size()) {
-        return m_outOfBounds;
+
+    uint16_t offset = 0;
+    for (int controllerIndex = 0; controllerIndex < m_fastLed.count(); ++controllerIndex) {
+        if ((index-offset) < m_fastLed[controllerIndex].size()) {
+//            ESP_LOGW("LedMatrix", "pixel(%d,%d) -> index: %d, controllerIndex:%d -> offset:%d => %d", x, y, index, controllerIndex, offset, (index-offset));
+            return m_fastLed[controllerIndex].leds()[(index-offset)];
+        }
+
+        offset += m_fastLed[controllerIndex].size();
     }
 
-    return m_fastLed.leds()[index];
+//    if (x < getWidth() && y < getHeight())
+//        ESP_LOGW("LedMatrix", "pixel(%d,%d) -> index: %d => out of bounds", x, y, index);
+
+    return m_outOfBounds;
 }
 
 void LedMatrix::drawPixel(uint8_t x, uint8_t y, const CRGB &color)
@@ -43,8 +54,10 @@ uint8_t LedMatrix::getBrightness()
 
 void LedMatrix::fade(uint8_t scaledown)
 {
-    for (int i = 0; i < m_fastLed.size(); i++) {
-        m_fastLed.leds()[i].nscale8(scaledown);
+    for (int controllerIndex = 0; controllerIndex < m_fastLed.count(); ++controllerIndex) {
+        for (int i = 0; i < m_fastLed[controllerIndex].size(); i++) {
+            m_fastLed[controllerIndex].leds()[i].nscale8(scaledown);
+        }
     }
 }
 
