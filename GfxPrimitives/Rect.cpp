@@ -13,8 +13,8 @@ Rect::Rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height):
     update();
 }
 
-Rect::Rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, const CRGB &color):
-    m_x(x), m_y(y), m_width(width), m_height(height), m_borderColor(color)
+Rect::Rect(uint8_t x, uint8_t y, uint8_t width, uint8_t height, const CRGB &borderColor):
+    m_x(x), m_y(y), m_width(width), m_height(height), m_borderColor(borderColor)
 {
     update();
 }
