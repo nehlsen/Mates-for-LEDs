@@ -5,7 +5,6 @@
 #include <Rect.h>
 #include <Circle.h>
 #include <Text.h>
-#include <esp_wifi.h>
 //#include "../Shark/Shark.h"
 
 //#define PIN 12
@@ -140,38 +139,55 @@ void smiley(LedMatrix& matrix)
 
 void demo_lines(LedMatrix& matrix, uint16_t delay)
 {
-    ESP_LOGI("MatrixTest", "LINES...");
+    const int long_delay = 5000;
 
+    ESP_LOGI("MatrixTest", "LINES...");
+    FastLED.clear();
+
+    ESP_LOGI("MatrixTest", "0/0 -> w/0");
     Line(0, 0, MATRIX_WIDTH, 0, CRGB(120, 120, 0)).render(matrix);
+    matrix.show();
+    vTaskDelay(long_delay / portTICK_PERIOD_MS);
+
+    ESP_LOGI("MatrixTest", "0/0 -> w/h");
     Line(0, 0, MATRIX_WIDTH, MATRIX_HEIGHT, CRGB(180, 20, 60)).render(matrix);
+    matrix.show();
+    vTaskDelay(long_delay / portTICK_PERIOD_MS);
+
+    ESP_LOGI("MatrixTest", "0/0 -> 0/h");
     Line(0, 0, 0, MATRIX_HEIGHT, CRGB(10, 20, 160)).render(matrix);
     matrix.show();
-    FastLED.delay(1000);
+    vTaskDelay(long_delay / portTICK_PERIOD_MS);
 
+    ESP_LOGI("MatrixTest", "scan, 0/0 -> n/h");
     for (int n = 0; n < MATRIX_WIDTH; ++n) {
         FastLED.clear();
         Line(0, 0, n, MATRIX_HEIGHT, CRGB(250, 0, 0)).render(matrix);
         matrix.show();
         FastLED.delay(delay);
     }
+    ESP_LOGI("MatrixTest", "scan, 0/0 -> w/n");
     for (int n = MATRIX_HEIGHT-1; n >= 0; --n) {
         FastLED.clear();
         Line(0, 0, MATRIX_WIDTH, n, CRGB(250, 0, 0)).render(matrix);
         matrix.show();
         FastLED.delay(delay);
     }
+    ESP_LOGI("MatrixTest", "scan, 0/n -> w/0");
     for (int n = 0; n < MATRIX_HEIGHT; ++n) {
         FastLED.clear();
         Line(0, n, MATRIX_WIDTH, 0, CRGB(250, 0, 0)).render(matrix);
         matrix.show();
         FastLED.delay(delay);
     }
+    ESP_LOGI("MatrixTest", "scan, n/h -> w/0");
     for (int n = 0; n < MATRIX_WIDTH; ++n) {
         FastLED.clear();
         Line(n, MATRIX_HEIGHT, MATRIX_WIDTH, 0, CRGB(250, 0, 0)).render(matrix);
         matrix.show();
         FastLED.delay(delay);
     }
+    FastLED.delay(delay);
 }
 
 void loop_squares(LedMatrix& matrix, uint16_t delay)
@@ -197,6 +213,19 @@ void loop_squares(LedMatrix& matrix, uint16_t delay)
     }
 }
 
+void white_rect(LedMatrix& matrix, uint16_t delay)
+{
+    matrix.clear();
+    vTaskDelay(delay / portTICK_PERIOD_MS);
+
+    const CRGB &white = CRGB(255, 255, 255);
+    Rect rect(0, 0, MATRIX_WIDTH, MATRIX_HEIGHT, white);
+    rect.setFillColor(white);
+    rect.render(matrix);
+    matrix.show();
+    vTaskDelay(delay / portTICK_PERIOD_MS);
+}
+
 void demo_rects(LedMatrix& matrix, uint16_t delay)
 {
     ESP_LOGI("MatrixTest", "RECTS...");
@@ -207,12 +236,14 @@ void demo_rects(LedMatrix& matrix, uint16_t delay)
     auto drawRect = [&](uint8_t x, uint8_t y, uint8_t width, uint8_t height, bool fill = false) {
         ESP_LOGI("MatrixTest", "Rect, %d/%d : %d,%d, %s", x, y, width, height, (fill ? "solid" : "outline"));
 
-        Rect rect(x, y, width, height, lineColor);
         matrix.clear();
+
+        Rect rect(x, y, width, height, lineColor);
         if (fill) rect.setFillColor(fillColor);
         rect.render(matrix);
         matrix.show();
-        FastLED.delay(delay);
+//        FastLED.delay(delay);
+        vTaskDelay(delay / portTICK_PERIOD_MS);
     };
 
     drawRect(0, 0, MATRIX_WIDTH, MATRIX_HEIGHT);
@@ -371,24 +402,37 @@ void draw_circles4(LedMatrix& matrix, uint16_t delay)
     }
 }
 
-void app_main()
+void low_level_test(CRGB *pixels, uint16_t numPixels, uint16_t delay = 60)
 {
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
+    FastLED.clear();
+    for (int i = 0; i < numPixels; ++i) {
+        (pixels+i)->setRGB(255, 255, 255);
+        FastLED.show();
+        vTaskDelay(delay / portTICK_PERIOD_MS);
+    }
 
+    FastLED.clear();
+    FastLED.showColor(CRGB::White);
+    vTaskDelay(delay / portTICK_PERIOD_MS);
+}
+
+void main_task(void *pvParameter)
+{
     CRGB pixels[NUM_PIXELS];
-    CFastLED::addLeds<WS2812, PIN, GRB>(pixels, NUM_PIXELS);
+//    CFastLED::addLeds<WS2812, PIN, GRB>(pixels, NUM_PIXELS);
+    CFastLED::addLeds<WS2812B, 18, GRB>(pixels, 0, 133);
+//    CFastLED::addLeds<WS2812B, 19, GRB>(pixels, 133, 267);
+    CFastLED::addLeds<WS2812B, 19, GRB>(pixels, 133, 133);
     auto matrix = LedMatrix(FastLED, MATRIX_WIDTH, MATRIX_HEIGHT, MatrixInvertHorizontal);
     FastLED.clear(true);
     FastLED.setBrightness(160);
 
-    /******************************************************************************************************************/
-    /* LINES */
-//    demo_lines(matrix, 100);
+    while (true) low_level_test(&pixels[0], NUM_PIXELS);
 
-//    FastLED.delay(1000);
-    /******************************************************************************************************************/
-    /* RECTS */
-    while (true) demo_rects(matrix, 1500);
+    while (true) demo_lines(matrix, 100);
+
+//    while (true) demo_rects(matrix, 500);
+//    while (true) white_rect(matrix, 500);
 
 //    while (true) drawCircles(matrix, 750);
 //    while (true) draw_circles2(matrix, 2000);
@@ -400,6 +444,21 @@ void app_main()
 //    test_text_canvas(matrix);
 //    test_rect_canvas(matrix);
 //    demo_flash(matrix);
+}
+
+void app_main()
+{
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+    xTaskCreatePinnedToCore(
+            &main_task,
+            "main_task",
+            64 * 1024,
+            nullptr,
+            5,
+            nullptr,
+            0
+    );
 }
 
 #ifdef __cplusplus
