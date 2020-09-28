@@ -42,7 +42,7 @@ public:
     Text& setColor(const CRGB &color);
 
     enum GradientMode {
-        GradientModePerLetter,
+        GradientModePerLetter = 0,
         GradientModeOverlay, // over matrix (Text has no access to matrix) / over canvas (canvas might not be set?)
     };
 

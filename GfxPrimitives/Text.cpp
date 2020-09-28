@@ -3,7 +3,7 @@
 #include "../LedMatrix/color_utils.h"
 
 Text::Text():
-    Text(0, 0, "", CRGB::Black)
+    Text(0, 0, "", CRGB::White)
 {}
 
 Text::Text(const std::string &text, const CRGB &color):
