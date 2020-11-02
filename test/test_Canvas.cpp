@@ -70,3 +70,13 @@ TEST_CASE("Canvas: rotate - origin", "[Matrix][Canvas]")
     testCanvas.setPixels(testLine.pixels()).setRotation(90, {2, 2}).applyTransformation();
     expectPixels(3, {{0, 2}, {0, 3}, {0, 4}}, testCanvas.pixels(), false);
 }
+
+TEST_CASE("Canvas: getRelativeSize", "[Matrix][Canvas]")
+{
+    // TODO TEST Canvas: getRelativeSize
+}
+
+TEST_CASE("Canvas: renderCentered", "[Matrix][Canvas]")
+{
+    // TODO TEST Canvas: renderCentered
+}

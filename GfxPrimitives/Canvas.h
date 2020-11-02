@@ -31,10 +31,13 @@ public:
     //   if transformation has been applied this will be changed
     Pixels pixels() const;
 
+    // set to '1.0' to disable sub-pixel-transformation (default)
+    Canvas& setSubPixelTransformationFactor(double subPixelTransformationFactor);
+
     // reset transformation parameters to identity matrix, keeps pixels
     Canvas& resetParameters();
     // apply transformation (and optionally reset parameters)
-    Canvas& applyTransformation(bool reset = true);
+    Canvas& applyTransformation(bool resetParametersAfterTransformation = true);
 
     Canvas& setRotation(int16_t degrees);
     Canvas& setRotation(int16_t degrees, const Point &origin);
@@ -60,6 +63,9 @@ protected:
 
     MatrixTransform m_matrixTransform;
     Pixels m_pixels;
+
+    double m_subPixelTransformationFactor = 1.0;
+    void applySubPixelTransformation();
 };
 
 #endif //MATES_CANVAS_H

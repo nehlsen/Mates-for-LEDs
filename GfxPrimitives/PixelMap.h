@@ -19,6 +19,7 @@ public:
 
     bool has(const Pixel& pixel) const;
 
+    using map::at;
     const Pixel& at(const Pixel& pixel) const;
 
     // find the lowest, left most pixel

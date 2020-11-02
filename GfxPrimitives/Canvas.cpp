@@ -1,5 +1,5 @@
 #include "Canvas.h"
-//#include <QtCore/QDebug>
+#include "PixelMap.h"
 
 bool MatrixTransform::isIdentityMatrix() const
 {
@@ -42,6 +42,13 @@ Pixels Canvas::pixels() const
     return m_pixels;
 }
 
+Canvas & Canvas::setSubPixelTransformationFactor(double subPixelTransformationFactor)
+{
+    m_subPixelTransformationFactor = subPixelTransformationFactor;
+
+    return *this;
+}
+
 Canvas &Canvas::resetParameters()
 {
     m_matrixTransform.reset();
@@ -49,19 +56,21 @@ Canvas &Canvas::resetParameters()
     return *this;
 }
 
-Canvas &Canvas::applyTransformation(bool reset)
+Canvas &Canvas::applyTransformation(bool resetParametersAfterTransformation)
 {
-//    ESP_LOGI("Canvas", "applyTransformation: %.2f,%.2f,%.2f,%.2f (%d/%d)", m_matrixTransform.a, m_matrixTransform.b, m_matrixTransform.c, m_matrixTransform.d, m_matrixTransform.origin.x, m_matrixTransform.origin.y);
+    if (m_subPixelTransformationFactor != 1.0) {
+        applySubPixelTransformation();
+    } else {
+        for (auto & pixel : m_pixels) {
+            int16_t x = std::round(m_matrixTransform.a * (pixel.getX() - m_matrixTransform.origin.x) + m_matrixTransform.b * (pixel.getY() - m_matrixTransform.origin.y));
+            int16_t y = std::round(m_matrixTransform.c * (pixel.getX() - m_matrixTransform.origin.x) + m_matrixTransform.d * (pixel.getY() - m_matrixTransform.origin.y));
 
-    for (auto & pixel : m_pixels) {
-        int16_t x = std::round(m_matrixTransform.a * (pixel.getX() - m_matrixTransform.origin.x) + m_matrixTransform.b * (pixel.getY() - m_matrixTransform.origin.y));
-        int16_t y = std::round(m_matrixTransform.c * (pixel.getX() - m_matrixTransform.origin.x) + m_matrixTransform.d * (pixel.getY() - m_matrixTransform.origin.y));
-
-        pixel.setX(x + m_matrixTransform.origin.x);
-        pixel.setY(y + m_matrixTransform.origin.y);
+            pixel.setX(x + m_matrixTransform.origin.x);
+            pixel.setY(y + m_matrixTransform.origin.y);
+        }
     }
-    
-    if (reset) {
+
+    if (resetParametersAfterTransformation) {
         resetParameters();
     }
     
@@ -239,4 +248,39 @@ void Canvas::renderCentered(LedMatrix &matrix) const
 const Pixels& Canvas::getPixelsToRender() const
 {
     return m_pixels;
+}
+
+void Canvas::applySubPixelTransformation()
+{
+    auto originPixels = PixelMap::fromPixels(m_pixels);
+
+    const Point &tr = getTopRight();
+    const Point &bl = getBottomLeft();
+
+    m_pixels.clear();
+
+    for (int16_t originX = bl.x; originX <= tr.x; ++originX) {
+        for (int16_t originY = bl.y; originY <= tr.y; ++originY) {
+            if (originPixels.count({originX, originY}) < 1) {
+                continue;
+            }
+            Pixel originPixel(originPixels.at({originX, originY}));
+
+            for (int subX = 0; subX < m_subPixelTransformationFactor; ++subX) {
+                for (int subY = 0; subY < m_subPixelTransformationFactor; ++subY) {
+                    double originSubX = originX + (subX / m_subPixelTransformationFactor);
+                    double originSubY = originY + (subY / m_subPixelTransformationFactor);
+
+                    originSubX -= m_matrixTransform.origin.x;
+                    originSubY -= m_matrixTransform.origin.y;
+
+                    int16_t newX = std::round(m_matrixTransform.a * originSubX + m_matrixTransform.b * originSubY);
+                    int16_t newY = std::round(m_matrixTransform.c * originSubX + m_matrixTransform.d * originSubY);
+
+                    originPixel.setX(newX + m_matrixTransform.origin.x).setY(newY + m_matrixTransform.origin.y);
+                    m_pixels.push_back(originPixel);
+                }
+            }
+        }
+    }
 }
