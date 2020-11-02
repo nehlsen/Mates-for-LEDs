@@ -38,6 +38,10 @@ public:
 
     Canvas& setRotation(int16_t degrees);
     Canvas& setRotation(int16_t degrees, const Point &origin);
+
+    Canvas& setZoom(int16_t percent);
+    Canvas& setZoom(int16_t percent, const Point &origin);
+
     Canvas& setMatrixTransform(double a, double b, double c, double d);
     Canvas& setMatrixTransform(double a, double b, double c, double d, const Point &origin);
     Canvas& setMatrixTransform(const MatrixTransform &matrixTransform);

@@ -115,6 +115,19 @@ Canvas &Canvas::setRotation(int16_t degrees, const Point &origin)
     return *this;
 }
 
+Canvas &Canvas::setZoom(int16_t percent)
+{
+    return setMatrixTransform(percent/100.0, 0, 0, percent/100.0);
+}
+
+Canvas &Canvas::setZoom(int16_t percent, const Point &origin)
+{
+    setZoom(percent);
+    m_matrixTransform.origin = origin;
+
+    return *this;
+}
+
 Canvas &Canvas::setMatrixTransform(double a, double b, double c, double d)
 {
     m_matrixTransform.a = a;
